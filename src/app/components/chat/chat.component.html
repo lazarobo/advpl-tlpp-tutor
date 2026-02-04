@@ -1,0 +1,38 @@
+<div class="chat-container">
+    <div class="chat-header glass-card">
+        <div class="bot-avatar">🤖</div>
+        <div class="header-info">
+            <h2>AdvPL Assistant</h2>
+            <span class="status-dot"></span> Online
+        </div>
+    </div>
+
+    <div class="messages-area glass-card">
+        <div class="messages-list">
+            <div *ngFor="let msg of messages" class="message-wrapper" [class.user]="msg.sender === 'user'"
+                [class.bot]="msg.sender === 'bot'">
+
+                <div class="avatar-small" *ngIf="msg.sender === 'bot'">🤖</div>
+
+                <div class="message-bubble">
+                    <p>{{ msg.text }}</p>
+                    <span class="time">{{ msg.timestamp | date:'shortTime' }}</span>
+                </div>
+            </div>
+
+            <div class="typing-indicator" *ngIf="isTyping">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-area glass-card">
+        <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()"
+            placeholder="Digite sua dúvida sobre AdvPL..." [disabled]="isTyping">
+        <button class="send-btn" (click)="sendMessage()" [disabled]="!userInput.trim() || isTyping">
+            ➤
+        </button>
+    </div>
+</div>

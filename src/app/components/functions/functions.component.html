@@ -1,0 +1,40 @@
+<div class="functions-container">
+    <header class="page-header">
+        <h1>Biblioteca de Funções</h1>
+        <p>Explore a documentação completa de funções AdvPL e TLPP.</p>
+    </header>
+
+    <div class="search-section glass-card">
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Buscar função, descrição ou categoria..." [(ngModel)]="searchQuery"
+                (keyup)="filterFunctions()">
+        </div>
+
+        <div class="categories-list">
+            <button *ngFor="let cat of categories" class="category-chip" [class.active]="selectedCategory === cat"
+                (click)="selectCategory(cat)">
+                {{ cat }}
+            </button>
+        </div>
+    </div>
+
+    <div class="functions-grid">
+        <div *ngFor="let func of functions" class="function-card glass-card" [routerLink]="['/function', func.name]">
+            <div class="card-header">
+                <h3 class="mono">{{ func.name }}</h3>
+                <span class="tlpp-badge" *ngIf="func.tlppCompatible" title="Compatível com TLPP">TLPP</span>
+            </div>
+            <span class="category-tag">{{ func.category }}</span>
+            <p class="description">{{ func.description }}</p>
+            <div class="card-footer">
+                <span class="view-details">Ver detalhes →</span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="functions.length === 0" class="no-results glass-card">
+        <h3>Nenhuma função encontrada</h3>
+        <p>Tente ajustar sua busca ou selecionar outra categoria.</p>
+    </div>
+</div>

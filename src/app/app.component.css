@@ -1,0 +1,12 @@
+.main-content {
+    padding: 2rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 90px);
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1rem;
+    }
+}

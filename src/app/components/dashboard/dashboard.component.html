@@ -1,0 +1,67 @@
+<div class="dashboard-container">
+    <section class="hero-section glass-card">
+        <div class="hero-content">
+            <h1>Domine o AdvPL & TLPP</h1>
+            <p>Sua jornada para se tornar um especialista em desenvolvimento Protheus começa aqui. Explore funções,
+                aprenda a sintaxe moderna e teste seus conhecimentos.</p>
+            <div class="hero-actions">
+                <button class="btn-primary" routerLink="/functions">Explorar Funções</button>
+                <button class="btn-secondary" routerLink="/quiz">Iniciar Desafio Diário</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="hero-advpl.png" alt="AdvPL Coding Art">
+        </div>
+    </section>
+
+    <div class="stats-grid">
+        <div class="stat-card glass-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-info">
+                <h3>Funções Dominadas</h3>
+                <p class="stat-value">12</p>
+            </div>
+        </div>
+        <div class="stat-card glass-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-info">
+                <h3>Precisão no Quiz</h3>
+                <p class="stat-value">85%</p>
+            </div>
+        </div>
+        <div class="stat-card glass-card">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-info">
+                <h3>Dias Seguidos</h3>
+                <p class="stat-value">5</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="suggested-learning">
+        <h2>Próximos Passos</h2>
+        <div class="learning-grid">
+            <div class="learning-card glass-card">
+                <div class="card-tag">Básico</div>
+                <h3>Manipulação de Strings</h3>
+                <p>Aprenda Val, Str, StrTran e outras funções essenciais.</p>
+                <button class="btn-text" routerLink="/functions" [queryParams]="{category: 'Conversão'}">Começar Aula
+                    →</button>
+            </div>
+            <div class="learning-card glass-card">
+                <div class="card-tag highlight">Intermediário</div>
+                <h3>Banco de Dados</h3>
+                <p>Domine DBSeek, DBSkip e a manipulação de tabelas.</p>
+                <button class="btn-text" routerLink="/functions" [queryParams]="{category: 'Banco de Dados'}">Começar
+                    Aula →</button>
+            </div>
+            <div class="learning-card glass-card">
+                <div class="card-tag new">Novo</div>
+                <h3>TLPP & POO</h3>
+                <p>Descubra o poder das classes e namespaces no TOTVS Protheus.</p>
+                <button class="btn-text" routerLink="/functions" [queryParams]="{category: 'TLPP'}">Começar Aula
+                    →</button>
+            </div>
+        </div>
+    </section>
+</div>

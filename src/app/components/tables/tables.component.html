@@ -1,0 +1,105 @@
+<div class="tables-container">
+    <header class="page-header">
+        <h1>Tabelas do Protheus</h1>
+        <p>Referência rápida das principais tabelas (SX e Negócio)</p>
+    </header>
+
+    <div class="search-section glass-card">
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Buscar tabela (Ex: SA1, Clientes, SX2)..." [(ngModel)]="searchQuery"
+                (input)="applyFilters()">
+        </div>
+        <div class="filter-pills">
+            <button [class.active]="filterType === 'Todos'" (click)="setFilter('Todos')">Todas</button>
+            <button [class.active]="filterType === 'Dicionário'" (click)="setFilter('Dicionário')">Dicionário
+                (SX)</button>
+            <button [class.active]="filterType === 'Dados'" (click)="setFilter('Dados')">Dados de Negócio</button>
+        </div>
+    </div>
+
+    <div class="tables-grid">
+        <div class="table-card glass-card" *ngFor="let table of filteredTables" (click)="openTableDetail(table)">
+            <div class="card-header">
+                <span class="table-name mono">{{ table.name }}</span>
+                <span class="table-type" [class.type-dic]="table.type === 'Dicionário'"
+                    [class.type-data]="table.type === 'Dados'">
+                    {{ table.type }}
+                </span>
+            </div>
+            <p class="table-desc">{{ table.description }}</p>
+            <div class="card-footer">
+                <div class="info-row">
+                    <span class="label">Módulo:</span>
+                    <span class="value">{{ table.module }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+        <div class="modal-content glass-card" (click)="$event.stopPropagation()">
+            <button class="close-btn" (click)="closeModal()">×</button>
+
+            <header class="modal-header" *ngIf="selectedTable">
+                <h2 class="mono">{{ selectedTable.name }}</h2>
+                <p>{{ selectedTable.description }}</p>
+                <div class="badges">
+                    <span class="badge">{{ selectedTable.module }}</span>
+                    <span class="badge">{{ selectedTable.type }}</span>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <section class="details-section">
+                    <h3>Indices (SIX)</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ordem</th>
+                                    <th>Chave de Índice</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let idx of selectedTableIndices">
+                                    <td class="mono-font center">{{ idx.order }}</td>
+                                    <td class="mono-font">{{ idx.key }}</td>
+                                    <td>{{ idx.description }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="details-section">
+                    <h3>Campos (SX3)</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Tipo</th>
+                                    <th class="center">Tam</th>
+                                    <th class="center">Dec</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let field of selectedTableFields">
+                                    <td class="mono-font bold">{{ field.name }}</td>
+                                    <td>{{ field.type }}</td>
+                                    <td class="center">{{ field.size }}</td>
+                                    <td class="center">{{ field.decimal || 0 }}</td>
+                                    <td>{{ field.description }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

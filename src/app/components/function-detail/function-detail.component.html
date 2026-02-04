@@ -1,0 +1,66 @@
+<div class="detail-container" *ngIf="functionData">
+    <button class="back-btn" routerLink="/functions">← Voltar para lista</button>
+
+    <header class="detail-header glass-card">
+        <div class="header-content">
+            <div class="title-row">
+                <h1 class="mono">{{ functionData.name }}</h1>
+                <span class="category-badge">{{ functionData.category }}</span>
+                <span class="tlpp-badge" *ngIf="functionData.tlppCompatible">TLPP Compatible</span>
+            </div>
+            <p class="description">{{ functionData.description }}</p>
+        </div>
+    </header>
+
+    <div class="content-grid">
+        <div class="main-info">
+            <section class="info-card glass-card">
+                <h2>Sintaxe</h2>
+                <div class="code-block syntax">
+                    <code class="function">{{ functionData.syntax }}</code>
+                </div>
+            </section>
+
+            <section class="info-card glass-card">
+                <h2>Parâmetros</h2>
+                <ul class="params-list" *ngIf="functionData.parameters.length > 0; else noParams">
+                    <li *ngFor="let param of functionData.parameters">
+                        <span class="param-bullet">›</span> {{ param }}
+                    </li>
+                </ul>
+                <ng-template #noParams>
+                    <p class="text-muted">Nenhum parâmetro necessário.</p>
+                </ng-template>
+            </section>
+
+            <section class="info-card glass-card">
+                <h2>Retorno</h2>
+                <div class="return-box">
+                    <span class="return-type">{{ functionData.returnType }}</span>
+                </div>
+            </section>
+        </div>
+
+        <div class="example-area">
+            <section class="info-card glass-card full-height">
+                <div class="section-header">
+                    <h2>Exemplo Prático</h2>
+                    <button class="copy-btn" (click)="copyCode(functionData.example)">Copiar Código</button>
+                </div>
+                <div class="code-block example">
+                    <pre><code>{{ functionData.example }}</code></pre>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <section class="related-section glass-card" *ngIf="relatedFunctions.length > 0">
+        <h2>Funções Relacionadas</h2>
+        <div class="related-grid">
+            <a *ngFor="let rel of relatedFunctions" [routerLink]="['/function', rel.name]" class="related-card">
+                <span class="mono">{{ rel.name }}</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </section>
+</div>

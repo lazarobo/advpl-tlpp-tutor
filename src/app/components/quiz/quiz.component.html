@@ -1,0 +1,97 @@
+<div class="quiz-container">
+    <header class="page-header">
+        <h1>Desafio AdvPL & TLPP</h1>
+        <p>Escolha um tópico e teste seus conhecimentos.</p>
+    </header>
+
+    <!-- TÓPICOS (MENU INICIAL) -->
+    <div class="topics-grid" *ngIf="!selectedTopic">
+        <div class="topic-card glass-card" *ngFor="let topic of topics" (click)="selectTopic(topic)">
+            <div class="topic-icon">{{ topic.icon }}</div>
+            <div class="topic-info">
+                <h2>{{ topic.title }}</h2>
+                <p>{{ topic.description }}</p>
+            </div>
+            <div class="topic-badge">{{ topic.questions.length }} Questões</div>
+        </div>
+    </div>
+
+    <!-- ÁREA DO QUIZ -->
+    <div class="quiz-active" *ngIf="selectedTopic">
+
+        <button class="btn-back" (click)="goBackToTopics()" *ngIf="!showResults">← Voltar aos Tópicos</button>
+
+        <div class="quiz-content" *ngIf="!showResults">
+            <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="((currentIndex + 1) / totalQuestions) * 100"></div>
+            </div>
+
+            <div class="question-card glass-card">
+                <div class="question-header">
+                    <span class="q-number">Questão {{ currentIndex + 1 }}/{{ totalQuestions }}</span>
+                    <span class="score-badge">Pontos: {{ score }}</span>
+                </div>
+
+                <h2 class="question-text">{{ currentQuestion.question }}</h2>
+
+                <div class="options-list">
+                    <button *ngFor="let option of currentQuestion.options; let i = index" class="option-btn"
+                        [class.selected]="selectedOption === i"
+                        [class.correct]="isAnswerChecked && i === currentQuestion.correctIndex"
+                        [class.wrong]="isAnswerChecked && selectedOption === i && i !== currentQuestion.correctIndex"
+                        [disabled]="isAnswerChecked" (click)="selectOption(i)">
+                        <span class="opt-label">{{ ['A', 'B', 'C', 'D'][i] }}</span>
+                        {{ option }}
+                        <span class="result-icon" *ngIf="isAnswerChecked">
+                            <ng-container *ngIf="i === currentQuestion.correctIndex">✓</ng-container>
+                            <ng-container
+                                *ngIf="selectedOption === i && i !== currentQuestion.correctIndex">✕</ng-container>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="actions-area">
+                    <div class="feedback-box" *ngIf="isAnswerChecked"
+                        [class.success]="selectedOption === currentQuestion.correctIndex"
+                        [class.error]="selectedOption !== currentQuestion.correctIndex">
+                        <p class="feedback-title">
+                            {{ selectedOption === currentQuestion.correctIndex ? 'Correto!' : 'Incorreto.' }}
+                        </p>
+                        <p class="explanation">{{ currentQuestion.explanation }}</p>
+                    </div>
+
+                    <div class="btn-wrapper">
+                        <button *ngIf="!isAnswerChecked" class="btn-primary" [disabled]="selectedOption === null"
+                            (click)="checkAnswer()">Confirmar Resposta</button>
+                        <button *ngIf="isAnswerChecked" class="btn-primary" (click)="nextQuestion()">
+                            {{ currentIndex === totalQuestions - 1 ? 'Ver Resultado' : 'Próxima Questão' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-card glass-card" *ngIf="showResults">
+            <div class="result-header">
+                <div class="trophy">🏆</div>
+                <h2>{{ selectedTopic.title }} - Concluído!</h2>
+            </div>
+
+            <div class="score-display">
+                <span class="big-score">{{ score }}</span>
+                <span class="total">de {{ totalQuestions }}</span>
+            </div>
+
+            <p class="performance-msg" *ngIf="score === totalQuestions">Perfeito! Domínio total do assunto!</p>
+            <p class="performance-msg" *ngIf="score < totalQuestions && score > totalQuestions / 2">Muito bom! Continue
+                estudando para gabaritar.</p>
+            <p class="performance-msg" *ngIf="score <= totalQuestions / 2">Precisa revisar alguns conceitos. Tente
+                novamente!</p>
+
+            <div class="result-actions">
+                <button class="btn-primary" (click)="restartQuiz()">Tentar Novamente</button>
+                <button class="btn-secondary" (click)="goBackToTopics()">Escolher Outro Tópico</button>
+            </div>
+        </div>
+    </div>
+</div>
