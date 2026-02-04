@@ -12,6 +12,14 @@
         <li><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
     </ul>
     <div class="nav-profile">
+        <div class="theme-toggle-group">
+            <button class="theme-btn" [class.active]="themeService.getTheme() === 'light'" (click)="setTheme('light')"
+                title="Modo Claro">☀️</button>
+            <button class="theme-btn" [class.active]="themeService.getTheme() === 'default'"
+                (click)="setTheme('default')" title="Padrão">💻</button>
+            <button class="theme-btn" [class.active]="themeService.getTheme() === 'dark'" (click)="setTheme('dark')"
+                title="Modo Escuro">🌙</button>
+        </div>
         <div class="level-badge">
             <span class="badge-icon">⚡</span>
             <span>Nível 5</span>
