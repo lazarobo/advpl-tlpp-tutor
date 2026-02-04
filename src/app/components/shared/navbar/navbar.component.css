@@ -31,13 +31,13 @@
 
 .logo-icon {
     font-size: 2rem;
-    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+    filter: drop-shadow(0 0 10px var(--primary-glow));
     transition: all 0.3s ease;
 }
 
 .nav-brand:hover .logo-icon {
     transform: rotate(10deg) scale(1.1);
-    filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.8));
+    filter: drop-shadow(0 0 20px var(--accent-soft));
 }
 
 .logo-text {
@@ -91,7 +91,7 @@
 
 .nav-links a:hover {
     color: var(--primary);
-    background: rgba(0, 212, 255, 0.05);
+    background: var(--primary-glow-subtle);
 }
 
 .nav-links a:hover::before,
@@ -101,7 +101,7 @@
 
 .nav-links a.active {
     color: var(--primary);
-    background: rgba(0, 212, 255, 0.1);
+    background: var(--primary-glow-subtle);
 }
 
 .nav-profile {
@@ -114,8 +114,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(255, 107, 53, 0.2) 100%);
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
@@ -141,13 +141,13 @@
     letter-spacing: 1px;
     border: 2px solid var(--primary);
     color: #FFFFFF;
-    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 4px 15px var(--primary-glow);
     transition: all 0.3s ease;
 }
 
 .avatar:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
+    box-shadow: 0 6px 25px var(--primary-glow);
 }
 
 @media (max-width: 768px) {
