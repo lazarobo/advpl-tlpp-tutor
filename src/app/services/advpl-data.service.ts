@@ -48,56 +48,444 @@ export class AdvplDataService {
         const fields: AdvPLField[] = [];
         const indices: AdvPLIndex[] = [];
 
-        // Estratégia: Se tivermos definição manual, usamos. Se não, geramos padrão Protheus.
-
         // Definições Manuais para as Principais Tabelas
-        if (tableName === 'SA1') {
-            fields.push(
-                { name: 'A1_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
-                { name: 'A1_COD', type: 'C', size: 6, description: 'Código do Cliente' },
-                { name: 'A1_LOJA', type: 'C', size: 2, description: 'Loja do Cliente' },
-                { name: 'A1_NOME', type: 'C', size: 40, description: 'Nome/Razão Social' },
-                { name: 'A1_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
-                { name: 'A1_END', type: 'C', size: 40, description: 'Endereço' },
-                { name: 'A1_TIPO', type: 'C', size: 1, description: 'Tipo (F-Físico/J-Jurídico)' },
-                { name: 'A1_EST', type: 'C', size: 2, description: 'Estado (UF)' },
-                { name: 'A1_MUN', type: 'C', size: 15, description: 'Município' },
-                { name: 'A1_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' }
-            );
-            indices.push(
-                { order: '1', key: 'A1_FILIAL+A1_COD+A1_LOJA', description: 'Por Código' },
-                { order: '2', key: 'A1_FILIAL+A1_NOME', description: 'Por Nome' },
-                { order: '3', key: 'A1_FILIAL+A1_CGC', description: 'Por CNPJ/CPF' }
-            );
-        } else if (tableName === 'SB1') {
-            fields.push(
-                { name: 'B1_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
-                { name: 'B1_COD', type: 'C', size: 15, description: 'Código do Produto' },
-                { name: 'B1_DESC', type: 'C', size: 30, description: 'Descrição' },
-                { name: 'B1_TIPO', type: 'C', size: 2, description: 'Tipo do Produto (PA/MP/BN)' },
-                { name: 'B1_UM', type: 'C', size: 2, description: 'Unidade de Medida' },
-                { name: 'B1_LOCPAD', type: 'C', size: 2, description: 'Armazém Padrão' },
-                { name: 'B1_POSIPI', type: 'C', size: 10, description: 'NCM/Classificação Fiscal' }
-            );
-            indices.push(
-                { order: '1', key: 'B1_FILIAL+B1_COD', description: 'Por Código' },
-                { order: '2', key: 'B1_FILIAL+B1_DESC', description: 'Por Descrição' },
-                { order: '3', key: 'B1_FILIAL+B1_TIPO+B1_COD', description: 'Por Tipo + Código' }
-            );
-        } else {
-            // Gerador Genérico para outras tabelas
-            fields.push(
-                { name: prefix + '_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
-                { name: prefix + '_COD', type: 'C', size: 6, description: 'Código Principal' },
-                { name: prefix + '_DESC', type: 'C', size: 30, description: 'Descrição/Nome' },
-                { name: prefix + '_DATA', type: 'D', size: 8, description: 'Data de Referência' },
-                { name: prefix + '_VALOR', type: 'N', size: 12, decimal: 2, description: 'Valor Monetário' },
-                { name: prefix + '_OBS', type: 'M', size: 80, description: 'Observações (Memo)' }
-            );
-            indices.push(
-                { order: '1', key: prefix + '_FILIAL+' + prefix + '_COD', description: 'Chave Primária Padrão' },
-                { order: '2', key: prefix + '_FILIAL+' + prefix + '_DESC', description: 'Ordem Alfabética' }
-            );
+        switch (tableName) {
+            case 'SA1': // Clientes
+                fields.push(
+                    { name: 'A1_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'A1_COD', type: 'C', size: 6, description: 'Código do Cliente' },
+                    { name: 'A1_LOJA', type: 'C', size: 2, description: 'Loja do Cliente' },
+                    { name: 'A1_NOME', type: 'C', size: 40, description: 'Nome/Razão Social' },
+                    { name: 'A1_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
+                    { name: 'A1_END', type: 'C', size: 40, description: 'Endereço' },
+                    { name: 'A1_TIPO', type: 'C', size: 1, description: 'Tipo (F-Físico/J-Jurídico/X-Export)' },
+                    { name: 'A1_EST', type: 'C', size: 2, description: 'Estado (UF)' },
+                    { name: 'A1_MUN', type: 'C', size: 15, description: 'Município' },
+                    { name: 'A1_BAIRRO', type: 'C', size: 20, description: 'Bairro' },
+                    { name: 'A1_CEP', type: 'C', size: 8, description: 'CEP' },
+                    { name: 'A1_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' },
+                    { name: 'A1_INSCR', type: 'C', size: 20, description: 'Inscrição Estadual' },
+                    { name: 'A1_EMAIL', type: 'C', size: 60, description: 'Email' },
+                    { name: 'A1_TEL', type: 'C', size: 15, description: 'Telefone' },
+                    { name: 'A1_VEND', type: 'C', size: 6, description: 'Código do Vendedor' },
+                    { name: 'A1_ULTCOM', type: 'D', size: 8, description: 'Data da Última Compra' },
+                    { name: 'A1_MSALDO', type: 'N', size: 14, decimal: 2, description: 'Saldo Financeiro' },
+                    { name: 'A1_NATUREZ', type: 'C', size: 10, description: 'Natureza Financeira' },
+                    { name: 'A1_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
+                    { name: 'A1_RISCO', type: 'C', size: 1, description: 'Grau de Risco' },
+                    { name: 'A1_LC', type: 'N', size: 14, decimal: 2, description: 'Limite de Crédito' },
+                    { name: 'A1_COMPLEM', type: 'C', size: 50, description: 'Complemento do Endereço' }
+                );
+                indices.push(
+                    { order: '1', key: 'A1_FILIAL+A1_COD+A1_LOJA', description: 'Por Código' },
+                    { order: '2', key: 'A1_FILIAL+A1_NOME', description: 'Por Nome' },
+                    { order: '3', key: 'A1_FILIAL+A1_CGC', description: 'Por CNPJ/CPF' },
+                    { order: '4', key: 'A1_FILIAL+A1_NREDUZ', description: 'Por Nome Fantasia' },
+                    { order: '5', key: 'A1_FILIAL+A1_END', description: 'Por Endereço' },
+                    { order: '6', key: 'A1_FILIAL+A1_VEND', description: 'Por Vendedor' }
+                );
+                break;
+
+            case 'SA2': // Fornecedores
+                fields.push(
+                    { name: 'A2_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'A2_COD', type: 'C', size: 6, description: 'Código do Fornecedor' },
+                    { name: 'A2_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'A2_NOME', type: 'C', size: 40, description: 'Razão Social' },
+                    { name: 'A2_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
+                    { name: 'A2_END', type: 'C', size: 40, description: 'Endereço' },
+                    { name: 'A2_EST', type: 'C', size: 2, description: 'Estado (UF)' },
+                    { name: 'A2_MUN', type: 'C', size: 15, description: 'Município' },
+                    { name: 'A2_BAIRRO', type: 'C', size: 20, description: 'Bairro' },
+                    { name: 'A2_CEP', type: 'C', size: 8, description: 'CEP' },
+                    { name: 'A2_TIPO', type: 'C', size: 1, description: 'Tipo (F/J)' },
+                    { name: 'A2_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' },
+                    { name: 'A2_INSCR', type: 'C', size: 20, description: 'Inscrição Estadual' },
+                    { name: 'A2_TEL', type: 'C', size: 15, description: 'Telefone' },
+                    { name: 'A2_EMAIL', type: 'C', size: 60, description: 'Email' },
+                    { name: 'A2_NATUREZ', type: 'C', size: 10, description: 'Natureza Financeira' },
+                    { name: 'A2_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
+                    { name: 'A2_BANCO', type: 'C', size: 3, description: 'Banco' },
+                    { name: 'A2_AGENCIA', type: 'C', size: 5, description: 'Agência' },
+                    { name: 'A2_NUMCON', type: 'C', size: 10, description: 'Conta Bancária' }
+                );
+                indices.push(
+                    { order: '1', key: 'A2_FILIAL+A2_COD+A2_LOJA', description: 'Por Código' },
+                    { order: '2', key: 'A2_FILIAL+A2_NOME', description: 'Por Nome' },
+                    { order: '3', key: 'A2_FILIAL+A2_CGC', description: 'Por CNPJ/CPF' },
+                    { order: '4', key: 'A2_FILIAL+A2_NREDUZ', description: 'Por Nome Fantasia' }
+                );
+                break;
+
+            case 'SB1': // Produtos
+                fields.push(
+                    { name: 'B1_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'B1_COD', type: 'C', size: 15, description: 'Código do Produto' },
+                    { name: 'B1_DESC', type: 'C', size: 30, description: 'Descrição' },
+                    { name: 'B1_TIPO', type: 'C', size: 2, description: 'Tipo (PA/MP/BN/MO)' },
+                    { name: 'B1_UM', type: 'C', size: 2, description: 'Unidade de Medida' },
+                    { name: 'B1_LOCPAD', type: 'C', size: 2, description: 'Armazém Padrão' },
+                    { name: 'B1_GRUPO', type: 'C', size: 4, description: 'Grupo de Produto' },
+                    { name: 'B1_POSIPI', type: 'C', size: 10, description: 'NCM/Classificação Fiscal' },
+                    { name: 'B1_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
+                    { name: 'B1_CC', type: 'C', size: 9, description: 'Centro de Custo' },
+                    { name: 'B1_PESO', type: 'N', size: 11, decimal: 4, description: 'Peso Líquido' },
+                    { name: 'B1_PESBRU', type: 'N', size: 11, decimal: 4, description: 'Peso Bruto' },
+                    { name: 'B1_TE', type: 'C', size: 3, description: 'TES de Entrada Padrão' },
+                    { name: 'B1_TS', type: 'C', size: 3, description: 'TES de Saída Padrão' },
+                    { name: 'B1_ORIGEM', type: 'C', size: 1, description: 'Origem do Produto' },
+                    { name: 'B1_RASTRO', type: 'C', size: 1, description: 'Rastreabilidade (L/S/N)' },
+                    { name: 'B1_REVISAO', type: 'C', size: 3, description: 'Revisão Atual' },
+                    { name: 'B1_UCOM', type: 'C', size: 2, description: 'Unidade Comercial' },
+                    { name: 'B1_CONV', type: 'N', size: 5, decimal: 2, description: 'Fator de Conversão' }
+                );
+                indices.push(
+                    { order: '1', key: 'B1_FILIAL+B1_COD', description: 'Por Código' },
+                    { order: '2', key: 'B1_FILIAL+B1_DESC', description: 'Por Descrição' },
+                    { order: '3', key: 'B1_FILIAL+B1_TIPO+B1_GRUPO+B1_COD', description: 'Por Tipo e Grupo' },
+                    { order: '4', key: 'B1_FILIAL+B1_GRUPO', description: 'Por Grupo' }
+                );
+                break;
+
+            case 'SC5': // Pedidos de Venda (Cabeçalho)
+                fields.push(
+                    { name: 'C5_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'C5_NUM', type: 'C', size: 6, description: 'Número do Pedido' },
+                    { name: 'C5_TIPO', type: 'C', size: 1, description: 'Tipo do Pedido (N/C/D/B)' },
+                    { name: 'C5_CLIENTE', type: 'C', size: 6, description: 'Código do Cliente' },
+                    { name: 'C5_LOJACLI', type: 'C', size: 2, description: 'Loja do Cliente' },
+                    { name: 'C5_CLIENT', type: 'C', size: 6, description: 'Cliente de Entrega' },
+                    { name: 'C5_LOJAENT', type: 'C', size: 2, description: 'Loja de Entrega' },
+                    { name: 'C5_EMISSAO', type: 'D', size: 8, description: 'Data de Emissão' },
+                    { name: 'C5_VEND1', type: 'C', size: 6, description: 'Vendedor 1' },
+                    { name: 'C5_CONDPAG', type: 'C', size: 3, description: 'Condição de Pagamento' },
+                    { name: 'C5_TABELA', type: 'C', size: 3, description: 'Tabela de Preços' },
+                    { name: 'C5_TRANSP', type: 'C', size: 6, description: 'Transportadora' },
+                    { name: 'C5_FRETE', type: 'C', size: 1, description: 'Tipo de Frete (C/F)' },
+                    { name: 'C5_NOTA', type: 'C', size: 9, description: 'Número da NF Gerada' },
+                    { name: 'C5_SERIE', type: 'C', size: 3, description: 'Série da NF' },
+                    { name: 'C5_MENNOTA', type: 'M', size: 80, description: 'Mensagem para Nota' }
+                );
+                indices.push(
+                    { order: '1', key: 'C5_FILIAL+C5_NUM', description: 'Por Número' },
+                    { order: '2', key: 'C5_FILIAL+C5_CLIENTE+C5_LOJACLI', description: 'Por Cliente' },
+                    { order: '3', key: 'C5_FILIAL+C5_EMISSAO', description: 'Por Emissão' },
+                    { order: '4', key: 'C5_FILIAL+C5_VEND1', description: 'Por Vendedor' }
+                );
+                break;
+
+            case 'SC6': // Itens do Pedido de Venda
+                fields.push(
+                    { name: 'C6_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'C6_NUM', type: 'C', size: 6, description: 'Número do Pedido' },
+                    { name: 'C6_ITEM', type: 'C', size: 2, description: 'Item do Pedido' },
+                    { name: 'C6_PRODUTO', type: 'C', size: 15, description: 'Produto' },
+                    { name: 'C6_DESCRI', type: 'C', size: 30, description: 'Descrição do Produto' },
+                    { name: 'C6_QTDVEN', type: 'N', size: 14, decimal: 2, description: 'Quantidade Vendida' },
+                    { name: 'C6_QTDENT', type: 'N', size: 14, decimal: 2, description: 'Quantidade Entregue' },
+                    { name: 'C6_PRCVEN', type: 'N', size: 14, decimal: 2, description: 'Preço Unitário' },
+                    { name: 'C6_VALOR', type: 'N', size: 14, decimal: 2, description: 'Valor Total do Item' },
+                    { name: 'C6_TES', type: 'C', size: 3, description: 'Tipo de Entrada/Saída' },
+                    { name: 'C6_CF', type: 'C', size: 5, description: 'CFOP' },
+                    { name: 'C6_LOCAL', type: 'C', size: 2, description: 'Armazém' },
+                    { name: 'C6_ENTREG', type: 'D', size: 8, description: 'Data de Entrega' },
+                    { name: 'C6_PEDCLI', type: 'C', size: 20, description: 'Pedido do Cliente' }
+                );
+                indices.push(
+                    { order: '1', key: 'C6_FILIAL+C6_NUM+C6_ITEM', description: 'Por Número + Item' },
+                    { order: '2', key: 'C6_FILIAL+C6_PRODUTO', description: 'Por Produto' }
+                );
+                break;
+
+            case 'SF2': // Cabeçalho NF Saída
+                fields.push(
+                    { name: 'F2_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'F2_DOC', type: 'C', size: 9, description: 'Número da Nota' },
+                    { name: 'F2_SERIE', type: 'C', size: 3, description: 'Série da Nota' },
+                    { name: 'F2_EMISSAO', type: 'D', size: 8, description: 'Data de Emissão' },
+                    { name: 'F2_CLIENTE', type: 'C', size: 6, description: 'Cliente' },
+                    { name: 'F2_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'F2_EST', type: 'C', size: 2, description: 'Estado Destino' },
+                    { name: 'F2_TIPO', type: 'C', size: 1, description: 'Tipo da Nota (N/C/D/B)' },
+                    { name: 'F2_VALBRUT', type: 'N', size: 14, decimal: 2, description: 'Valor Bruto' },
+                    { name: 'F2_VALICM', type: 'N', size: 14, decimal: 2, description: 'Valor do ICMS' },
+                    { name: 'F2_VALIPI', type: 'N', size: 14, decimal: 2, description: 'Valor do IPI' },
+                    { name: 'F2_VALMERC', type: 'N', size: 14, decimal: 2, description: 'Valor das Mercadorias' },
+                    { name: 'F2_DUPL', type: 'C', size: 9, description: 'Número da Duplicata' },
+                    { name: 'F2_COND', type: 'C', size: 3, description: 'Condição de Pagamento' },
+                    { name: 'F2_VEND1', type: 'C', size: 6, description: 'Vendedor 1' }
+                );
+                indices.push(
+                    { order: '1', key: 'F2_FILIAL+F2_DOC+F2_SERIE', description: 'Por Documento' },
+                    { order: '2', key: 'F2_FILIAL+F2_CLIENTE+F2_LOJA+F2_DOC', description: 'Por Cliente e Documento' },
+                    { order: '3', key: 'F2_FILIAL+F2_EMISSAO', description: 'Por Data de Emissão' }
+                );
+                break;
+
+            case 'SD2': // Itens NF Saída
+                fields.push(
+                    { name: 'D2_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: 'D2_DOC', type: 'C', size: 9, description: 'Número da Nota' },
+                    { name: 'D2_SERIE', type: 'C', size: 3, description: 'Série' },
+                    { name: 'D2_ITEM', type: 'C', size: 2, description: 'Item' },
+                    { name: 'D2_COD', type: 'C', size: 15, description: 'Produto' },
+                    { name: 'D2_DESC', type: 'C', size: 30, description: 'Descrição' },
+                    { name: 'D2_QUANT', type: 'N', size: 14, decimal: 2, description: 'Quantidade' },
+                    { name: 'D2_PRCVEN', type: 'N', size: 14, decimal: 2, description: 'Preço Unitário' },
+                    { name: 'D2_TOTAL', type: 'N', size: 14, decimal: 2, description: 'Valor Total' },
+                    { name: 'D2_TES', type: 'C', size: 3, description: 'TES' },
+                    { name: 'D2_CF', type: 'C', size: 5, description: 'CFOP' },
+                    { name: 'D2_LOCAL', type: 'C', size: 2, description: 'Armazém' },
+                    { name: 'D2_PEDIDO', type: 'C', size: 6, description: 'Pedido de Venda' }
+                );
+                indices.push(
+                    { order: '1', key: 'D2_FILIAL+D2_DOC+D2_SERIE+D2_ITEM', description: 'Por Documento+Item' },
+                    { order: '2', key: 'D2_FILIAL+D2_COD', description: 'Por Produto' }
+                );
+                break;
+
+            case 'SF1': // Cabeçalho NF Entrada
+                fields.push(
+                    { name: 'F1_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'F1_DOC', type: 'C', size: 9, description: 'Número da Nota' },
+                    { name: 'F1_SERIE', type: 'C', size: 3, description: 'Série' },
+                    { name: 'F1_FORNECE', type: 'C', size: 6, description: 'Fornecedor' },
+                    { name: 'F1_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'F1_EMISSAO', type: 'D', size: 8, description: 'Data de Emissão' },
+                    { name: 'F1_DTDIGIT', type: 'D', size: 8, description: 'Data de Digitação' },
+                    { name: 'F1_VALBRUT', type: 'N', size: 14, decimal: 2, description: 'Valor Bruto' },
+                    { name: 'F1_VALMERC', type: 'N', size: 14, decimal: 2, description: 'Valor das Mercadorias' },
+                    { name: 'F1_TIPO', type: 'C', size: 1, description: 'Tipo da Nota' },
+                    { name: 'F1_EST', type: 'C', size: 2, description: 'Estado Origem' },
+                    { name: 'F1_COND', type: 'C', size: 3, description: 'Condição de Pagamento' },
+                    { name: 'F1_DUPL', type: 'C', size: 9, description: 'Número da Duplicata' }
+                );
+                indices.push(
+                    { order: '1', key: 'F1_FILIAL+F1_DOC+F1_SERIE+F1_FORNECE+F1_LOJA', description: 'Por Chave da Nota' },
+                    { order: '2', key: 'F1_FILIAL+F1_EMISSAO', description: 'Por Emissão' },
+                    { order: '3', key: 'F1_FILIAL+F1_FORNECE+F1_LOJA', description: 'Por Fornecedor' }
+                );
+                break;
+
+            case 'SD1': // Itens NF Entrada
+                fields.push(
+                    { name: 'D1_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'D1_DOC', type: 'C', size: 9, description: 'Número da Nota' },
+                    { name: 'D1_SERIE', type: 'C', size: 3, description: 'Série' },
+                    { name: 'D1_FORNECE', type: 'C', size: 6, description: 'Fornecedor' },
+                    { name: 'D1_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'D1_ITEM', type: 'C', size: 2, description: 'Item' },
+                    { name: 'D1_COD', type: 'C', size: 15, description: 'Produto' },
+                    { name: 'D1_DESC', type: 'C', size: 30, description: 'Descrição' },
+                    { name: 'D1_QUANT', type: 'N', size: 14, decimal: 2, description: 'Quantidade' },
+                    { name: 'D1_VUNIT', type: 'N', size: 14, decimal: 2, description: 'Valor Unitário' },
+                    { name: 'D1_TOTAL', type: 'N', size: 14, decimal: 2, description: 'Valor Total' },
+                    { name: 'D1_TES', type: 'C', size: 3, description: 'TES' },
+                    { name: 'D1_CF', type: 'C', size: 5, description: 'CFOP' },
+                    { name: 'D1_LOCAL', type: 'C', size: 2, description: 'Armazém' },
+                    { name: 'D1_PEDIDO', type: 'C', size: 6, description: 'Pedido de Compra' }
+                );
+                indices.push(
+                    { order: '1', key: 'D1_FILIAL+D1_DOC+D1_SERIE+D1_FORNECE+D1_LOJA+D1_ITEM', description: 'Por Nota+Item' },
+                    { order: '2', key: 'D1_FILIAL+D1_COD', description: 'Por Produto' }
+                );
+                break;
+
+            case 'SE1': // Contas a Receber
+                fields.push(
+                    { name: 'E1_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'E1_PREFIXO', type: 'C', size: 3, description: 'Prefixo' },
+                    { name: 'E1_NUM', type: 'C', size: 9, description: 'Número do Título' },
+                    { name: 'E1_PARCELA', type: 'C', size: 2, description: 'Parcela' },
+                    { name: 'E1_TIPO', type: 'C', size: 3, description: 'Tipo do Título' },
+                    { name: 'E1_NATUREZ', type: 'C', size: 10, description: 'Natureza' },
+                    { name: 'E1_CLIENTE', type: 'C', size: 6, description: 'Cliente' },
+                    { name: 'E1_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'E1_EMISSAO', type: 'D', size: 8, description: 'Emissão' },
+                    { name: 'E1_VENCTO', type: 'D', size: 8, description: 'Vencimento' },
+                    { name: 'E1_VENCREA', type: 'D', size: 8, description: 'Vencimento Real' },
+                    { name: 'E1_VALOR', type: 'N', size: 14, decimal: 2, description: 'Valor Original' },
+                    { name: 'E1_SALDO', type: 'N', size: 14, decimal: 2, description: 'Saldo Atual' },
+                    { name: 'E1_BAIXA', type: 'D', size: 8, description: 'Data da Baixa' },
+                    { name: 'E1_HIST', type: 'C', size: 40, description: 'Histórico' }
+                );
+                indices.push(
+                    { order: '1', key: 'E1_FILIAL+E1_PREFIXO+E1_NUM+E1_PARCELA+E1_TIPO', description: 'Chave Principal' },
+                    { order: '2', key: 'E1_FILIAL+E1_CLIENTE+E1_LOJA+E1_PREFIXO+E1_NUM', description: 'Por Cliente' },
+                    { order: '3', key: 'E1_FILIAL+E1_VENCTO', description: 'Por Vencimento' }
+                );
+                break;
+
+            case 'SE2': // Contas a Pagar
+                fields.push(
+                    { name: 'E2_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'E2_PREFIXO', type: 'C', size: 3, description: 'Prefixo' },
+                    { name: 'E2_NUM', type: 'C', size: 9, description: 'Número do Título' },
+                    { name: 'E2_PARCELA', type: 'C', size: 2, description: 'Parcela' },
+                    { name: 'E2_TIPO', type: 'C', size: 3, description: 'Tipo do Título' },
+                    { name: 'E2_NATUREZ', type: 'C', size: 10, description: 'Natureza' },
+                    { name: 'E2_FORNECE', type: 'C', size: 6, description: 'Fornecedor' },
+                    { name: 'E2_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'E2_EMISSAO', type: 'D', size: 8, description: 'Emissão' },
+                    { name: 'E2_VENCTO', type: 'D', size: 8, description: 'Vencimento' },
+                    { name: 'E2_VENCREA', type: 'D', size: 8, description: 'Vencimento Real' },
+                    { name: 'E2_VALOR', type: 'N', size: 14, decimal: 2, description: 'Valor Original' },
+                    { name: 'E2_SALDO', type: 'N', size: 14, decimal: 2, description: 'Saldo Atual' },
+                    { name: 'E2_BAIXA', type: 'D', size: 8, description: 'Data da Baixa' },
+                    { name: 'E2_HIST', type: 'C', size: 40, description: 'Histórico' }
+                );
+                indices.push(
+                    { order: '1', key: 'E2_FILIAL+E2_PREFIXO+E2_NUM+E2_PARCELA+E2_TIPO', description: 'Chave Principal' },
+                    { order: '2', key: 'E2_FILIAL+E2_FORNECE+E2_LOJA+E2_PREFIXO+E2_NUM', description: 'Por Fornecedor' },
+                    { order: '3', key: 'E2_FILIAL+E2_VENCTO', description: 'Por Vencimento' }
+                );
+                break;
+
+            case 'CT1': // Plano de Contas
+                fields.push(
+                    { name: 'CT1_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'CT1_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
+                    { name: 'CT1_DESC01', type: 'C', size: 40, description: 'Descrição' },
+                    { name: 'CT1_CLASSE', type: 'C', size: 1, description: 'Classe (1-Sintética/2-Analítica)' },
+                    { name: 'CT1_NORMAL', type: 'C', size: 1, description: 'Condição Normal (1-Devedora/2-Credora)' },
+                    { name: 'CT1_RES', type: 'C', size: 10, description: 'Conta Superior' }
+                );
+                indices.push(
+                    { order: '1', key: 'CT1_FILIAL+CT1_CONTA', description: 'Por Conta' },
+                    { order: '2', key: 'CT1_FILIAL+CT1_DESC01', description: 'Por Descrição' },
+                    { order: '3', key: 'CT1_FILIAL+CT1_RES', description: 'Por Conta Superior' }
+                );
+                break;
+
+            case 'CTT': // Centro de Custo
+                fields.push(
+                    { name: 'CTT_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'CTT_CUSTO', type: 'C', size: 9, description: 'Centro de Custo' },
+                    { name: 'CTT_DESC01', type: 'C', size: 40, description: 'Descrição' },
+                    { name: 'CTT_BLOQ', type: 'C', size: 1, description: 'Bloqueado? (1-Sim/2-Não)' },
+                    { name: 'CTT_CLASSE', type: 'C', size: 1, description: 'Classe (1-Sintético/2-Analítico)' }
+                );
+                indices.push(
+                    { order: '1', key: 'CTT_FILIAL+CTT_CUSTO', description: 'Por C. Custo' },
+                    { order: '2', key: 'CTT_FILIAL+CTT_DESC01', description: 'Por Descrição' }
+                );
+                break;
+
+            case 'SA3': // Vendedores
+                fields.push(
+                    { name: 'A3_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'A3_COD', type: 'C', size: 6, description: 'Código' },
+                    { name: 'A3_NOME', type: 'C', size: 40, description: 'Nome' },
+                    { name: 'A3_NREDUZ', type: 'C', size: 20, description: 'Nome Reduzido' },
+                    { name: 'A3_TIPO', type: 'C', size: 1, description: 'Tipo (I-Interno/E-Externo)' },
+                    { name: 'A3_COMIS', type: 'N', size: 6, decimal: 2, description: 'Percentual Comissão' },
+                    { name: 'A3_EMAIL', type: 'C', size: 60, description: 'Email' }
+                );
+                indices.push(
+                    { order: '1', key: 'A3_FILIAL+A3_COD', description: 'Por Código' },
+                    { order: '2', key: 'A3_FILIAL+A3_NOME', description: 'Por Nome' }
+                );
+                break;
+
+            case 'SC7': // Pedidos de Compra
+                fields.push(
+                    { name: 'C7_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'C7_NUM', type: 'C', size: 6, description: 'Número do Pedido' },
+                    { name: 'C7_FORNECE', type: 'C', size: 6, description: 'Fornecedor' },
+                    { name: 'C7_LOJA', type: 'C', size: 2, description: 'Loja' },
+                    { name: 'C7_PRODUTO', type: 'C', size: 15, description: 'Produto' },
+                    { name: 'C7_QUANT', type: 'N', size: 14, decimal: 2, description: 'Quantidade' },
+                    { name: 'C7_PRECO', type: 'N', size: 14, decimal: 2, description: 'Preço' },
+                    { name: 'C7_TOTAL', type: 'N', size: 14, decimal: 2, description: 'Total do Item' },
+                    { name: 'C7_EMISSAO', type: 'D', size: 8, description: 'Emissão' },
+                    { name: 'C7_DATPRF', type: 'D', size: 8, description: 'Data Entrega Prevista' },
+                    { name: 'C7_ENCER', type: 'C', size: 1, description: 'Encerrado (S/N)' }
+                );
+                indices.push(
+                    { order: '1', key: 'C7_FILIAL+C7_NUM+C7_ITEM', description: 'Por Número' },
+                    { order: '2', key: 'C7_FILIAL+C7_FORNECE', description: 'Por Fornecedor' },
+                    { order: '3', key: 'C7_FILIAL+C7_PRODUTO', description: 'Por Produto' }
+                );
+                break;
+
+            case 'SE4': // Condições de Pagamento
+                fields.push(
+                    { name: 'E4_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'E4_CODIGO', type: 'C', size: 3, description: 'Código' },
+                    { name: 'E4_TIPO', type: 'C', size: 1, description: 'Tipo (1-9)' },
+                    { name: 'E4_COND', type: 'C', size: 40, description: 'Condição' },
+                    { name: 'E4_DESCRI', type: 'C', size: 15, description: 'Descrição' }
+                );
+                indices.push(
+                    { order: '1', key: 'E4_FILIAL+E4_CODIGO', description: 'Por Código' }
+                );
+                break;
+
+            case 'SY1': // Cadastro de Compradores
+                fields.push(
+                    { name: 'Y1_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'Y1_COD', type: 'C', size: 3, description: 'Código' },
+                    { name: 'Y1_NOME', type: 'C', size: 40, description: 'Nome' },
+                    { name: 'Y1_EMAIL', type: 'C', size: 60, description: 'Email' },
+                    { name: 'Y1_TEL', type: 'C', size: 15, description: 'Telefone' }
+                );
+                indices.push(
+                    { order: '1', key: 'Y1_FILIAL+Y1_COD', description: 'Por Código' },
+                    { order: '2', key: 'Y1_FILIAL+Y1_NOME', description: 'Por Nome' }
+                );
+                break;
+
+            case 'SN1': // Ativo Imobilizado
+                fields.push(
+                    { name: 'N1_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'N1_CBASE', type: 'C', size: 10, description: 'Código Base' },
+                    { name: 'N1_ITEM', type: 'C', size: 4, description: 'Item' },
+                    { name: 'N1_DESCRIC', type: 'C', size: 40, description: 'Descrição' },
+                    { name: 'N1_AQUISIC', type: 'D', size: 8, description: 'Data Aquisição' },
+                    { name: 'N1_VALOR', type: 'N', size: 14, decimal: 2, description: 'Valor Original' },
+                    { name: 'N1_CHAPA', type: 'C', size: 10, description: 'Chapa/Plaqueta' },
+                    { name: 'N1_GRUPO', type: 'C', size: 4, description: 'Grupo do Bem' }
+                );
+                indices.push(
+                    { order: '1', key: 'N1_FILIAL+N1_CBASE+N1_ITEM', description: 'Por Código' },
+                    { order: '2', key: 'N1_FILIAL+N1_DESCRIC', description: 'Por Descrição' },
+                    { order: '3', key: 'N1_FILIAL+N1_GRUPO', description: 'Por Grupo' }
+                );
+                break;
+
+            case 'SN3': // Saldos do Ativo
+                fields.push(
+                    { name: 'N3_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                    { name: 'N3_CBASE', type: 'C', size: 10, description: 'Código Base' },
+                    { name: 'N3_ITEM', type: 'C', size: 4, description: 'Item' },
+                    { name: 'N3_TIPO', type: 'C', size: 2, description: 'Tipo de Saldo' },
+                    { name: 'N3_DINDEPR', type: 'D', size: 8, description: 'Data Início Depreciação' },
+                    { name: 'N3_VORIG1', type: 'N', size: 14, decimal: 2, description: 'Valor Original Moeda 1' },
+                    { name: 'N3_VRACUM1', type: 'N', size: 14, decimal: 2, description: 'Depreciação Acumulada' }
+                );
+                indices.push(
+                    { order: '1', key: 'N3_FILIAL+N3_CBASE+N3_ITEM+N3_TIPO', description: 'Chave Principal' }
+                );
+                break;
+
+            default:
+                // Gerador Genérico para outras tabelas não mapeadas detalhadamente
+                fields.push(
+                    { name: prefix + '_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                    { name: prefix + '_COD', type: 'C', size: 6, description: 'Código Principal' },
+                    { name: prefix + '_DESC', type: 'C', size: 30, description: 'Descrição/Nome' },
+                    { name: prefix + '_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                    { name: prefix + '_DATA', type: 'D', size: 8, description: 'Data de Referência' },
+                    { name: prefix + '_VALOR', type: 'N', size: 12, decimal: 2, description: 'Valor Monetário' },
+                    { name: prefix + '_QUANT', type: 'N', size: 12, decimal: 2, description: 'Quantidade' },
+                    { name: prefix + '_STATUS', type: 'C', size: 1, description: 'Status' },
+                    { name: prefix + '_OBS', type: 'M', size: 80, description: 'Observações (Memo)' }
+                );
+                indices.push(
+                    { order: '1', key: prefix + '_FILIAL+' + prefix + '_COD', description: 'Chave Primária Padrão' },
+                    { order: '2', key: prefix + '_FILIAL+' + prefix + '_DESC', description: 'Ordem Alfabética' }
+                );
+                break;
         }
 
         return { fields, indices };
@@ -161,6 +549,10 @@ export class AdvplDataService {
         { name: 'SE3', description: 'Movimento de Comissões', module: 'Financeiro', type: 'Dados', key: 'E3_FILIAL+E3_VEND+E3_NUM' },
         { name: 'SE5', description: 'Movimentação Bancária (Baixas)', module: 'Financeiro', type: 'Dados', key: 'E5_FILIAL+E5_DATA+E5_BANCO' },
         { name: 'SF6', description: 'Guias de Recolhimento', module: 'Financeiro', type: 'Dados', key: 'F6_FILIAL+F6_NUMERO' },
+        { name: 'SE4', description: 'Condições de Pagamento', module: 'Financeiro', type: 'Dados', key: 'E4_FILIAL+E4_CODIGO' },
+        { name: 'SY1', description: 'Cadastro de Compradores', module: 'Compras', type: 'Dados', key: 'Y1_FILIAL+Y1_COD' },
+        { name: 'SN1', description: 'Ativo Imobilizado', module: 'Ativo Fixo', type: 'Dados', key: 'N1_FILIAL+N1_CBASE+N1_ITEM' },
+        { name: 'SN3', description: 'Saldos do Ativo', module: 'Ativo Fixo', type: 'Dados', key: 'N3_FILIAL+N3_CBASE+N3_ITEM' },
 
         // Fiscal (SF)
         { name: 'SF3', description: 'Livros Fiscais', module: 'Fiscal', type: 'Dados', key: 'F3_FILIAL+F3_ENTR_SA+F3_DOC+F3_SERIE' },
