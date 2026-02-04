@@ -75,16 +75,16 @@
 }
 
 .category-chip:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-card);
     color: var(--text-primary);
 }
 
 .category-chip.active {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: var(--gradient-text);
+    border-color: var(--bg-card);
     color: white;
     /* Changed from var(--bg-main) for better contrast on dark bg if needed, or keep check */
-    color: #0F0F1A;
+    color: var(--bg-main);
     font-weight: 600;
 }
 
@@ -120,7 +120,7 @@
 
 .function-card:hover {
     transform: translateY(-5px);
-    background: rgba(30, 30, 50, 0.9);
+    background: var(--bg-card);
     border-color: var(--primary-dark);
 }
 
