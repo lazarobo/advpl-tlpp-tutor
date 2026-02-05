@@ -497,19 +497,200 @@ export class AdvplDataService {
                 );
                 break;
 
+            case 'SX1': // Perguntas do Usuário
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X1_GRUPO', type: 'C', size: 6, description: 'Grupo da Pergunta' },
+                        { name: 'X1_ORDEM', type: 'C', size: 2, description: 'Ordem' },
+                        { name: 'X1_PERGUNT', type: 'C', size: 50, description: 'Pergunta' },
+                        { name: 'X1_VARIAV', type: 'C', size: 10, description: 'Variável' },
+                        { name: 'X1_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                        { name: 'X1_TAMANHO', type: 'N', size: 3, description: 'Tamanho' },
+                        { name: 'X1_DECIMAL', type: 'N', size: 2, description: 'Decimais' },
+                        { name: 'X1_GSC', type: 'C', size: 1, description: 'Get/Combo' },
+                        { name: 'X1_VALID', type: 'C', size: 100, description: 'Validação' },
+                        { name: 'X1_DEF01', type: 'C', size: 50, description: 'Conteúdo Default 1' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X1_GRUPO+X1_ORDEM', description: 'Por Grupo/Ordem' }
+                );
+                break;
+
+            case 'SX2': // Dicionário de Arquivos
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X2_CHAVE', type: 'C', size: 3, description: 'Chave da Tabela' },
+                        { name: 'X2_ARQUIVO', type: 'C', size: 10, description: 'Nome do Arquivo' },
+                        { name: 'X2_NOME', type: 'C', size: 30, description: 'Descrição da Tabela' },
+                        { name: 'X2_MODO', type: 'C', size: 1, description: 'Modo de Acesso' },
+                        { name: 'X2_TTS', type: 'C', size: 1, description: 'Controle de Transação' },
+                        { name: 'X2_UESSION', type: 'C', size: 1, description: 'Uso Sessão' },
+                        { name: 'X2_MODULO', type: 'C', size: 10, description: 'Módulo' },
+                        { name: 'X2_UNICO', type: 'C', size: 80, description: 'Chave Única' },
+                        { name: 'X2_ROTINA', type: 'C', size: 10, description: 'Rotina' },
+                        { name: 'X2_PESSION', type: 'C', size: 1, description: 'Persistência' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X2_CHAVE', description: 'Por Chave da Tabela' }
+                );
+                break;
+
+            case 'SX3': // Dicionário de Campos
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X3_ARQUIVO', type: 'C', size: 10, description: 'Arquivo' },
+                        { name: 'X3_ORDEM', type: 'C', size: 2, description: 'Ordem' },
+                        { name: 'X3_CAMPO', type: 'C', size: 10, description: 'Nome do Campo' },
+                        { name: 'X3_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                        { name: 'X3_TAMANHO', type: 'N', size: 3, description: 'Tamanho' },
+                        { name: 'X3_DECIMAL', type: 'N', size: 2, description: 'Decimais' },
+                        { name: 'X3_TITULO', type: 'C', size: 20, description: 'Título' },
+                        { name: 'X3_DESCRIC', type: 'C', size: 30, description: 'Descrição' },
+                        { name: 'X3_PICTURE', type: 'C', size: 40, description: 'Picture' },
+                        { name: 'X3_VALID', type: 'C', size: 250, description: 'Validação' },
+                        { name: 'X3_USADO', type: 'C', size: 1, description: 'Usado' },
+                        { name: 'X3_RESERV', type: 'C', size: 1, description: 'Reservado' },
+                        { name: 'X3_BROWSE', type: 'C', size: 1, description: 'Browse' },
+                        { name: 'X3_VISUAL', type: 'C', size: 1, description: 'Visual' },
+                        { name: 'X3_CONTEXT', type: 'C', size: 1, description: 'Contexto' },
+                        { name: 'X3_CBOX', type: 'C', size: 250, description: 'ComboBox' },
+                        { name: 'X3_RELACAO', type: 'C', size: 250, description: 'Inicializador Padrão' },
+                        { name: 'X3_F3', type: 'C', size: 10, description: 'Consulta F3' },
+                        { name: 'X3_TRIGGER', type: 'C', size: 1, description: 'Gatilho' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X3_ARQUIVO+X3_ORDEM', description: 'Por Arquivo/Ordem' },
+                    { order: '2', key: 'X3_CAMPO', description: 'Por Campo' }
+                );
+                break;
+
+            case 'SX5': // Tabelas Genéricas
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X5_FILIAL', type: 'C', size: 2, description: 'Filial' },
+                        { name: 'X5_TABELA', type: 'C', size: 2, description: 'Tabela' },
+                        { name: 'X5_CHAVE', type: 'C', size: 6, description: 'Chave' },
+                        { name: 'X5_DESCRI', type: 'C', size: 40, description: 'Descrição' },
+                        { name: 'X5_DESCSPA', type: 'C', size: 40, description: 'Descrição Espanhol' },
+                        { name: 'X5_DESCENG', type: 'C', size: 40, description: 'Descrição Inglês' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X5_FILIAL+X5_TABELA+X5_CHAVE', description: 'Por Tabela/Chave' }
+                );
+                break;
+
+            case 'SX6': // Parâmetros do Sistema
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X6_FIL', type: 'C', size: 2, description: 'Filial' },
+                        { name: 'X6_VAR', type: 'C', size: 10, description: 'Nome do Parâmetro' },
+                        { name: 'X6_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                        { name: 'X6_DESCRIC', type: 'C', size: 60, description: 'Descrição' },
+                        { name: 'X6_CONTEUD', type: 'C', size: 250, description: 'Conteúdo' },
+                        { name: 'X6_PROPRI', type: 'C', size: 1, description: 'Proprietário' },
+                        { name: 'X6_VALID', type: 'C', size: 100, description: 'Validação' },
+                        { name: 'X6_INIT', type: 'C', size: 1, description: 'Inicializar' },
+                        { name: 'X6_PESSION', type: 'C', size: 1, description: 'Persistência' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X6_FIL+X6_VAR', description: 'Por Filial/Parâmetro' }
+                );
+                break;
+
+            case 'SX7': // Gatilhos de Campos
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X7_CAMPO', type: 'C', size: 10, description: 'Campo Origem' },
+                        { name: 'X7_SEQUENC', type: 'C', size: 2, description: 'Sequência' },
+                        { name: 'X7_CDOMIN', type: 'C', size: 10, description: 'Campo Domínio' },
+                        { name: 'X7_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                        { name: 'X7_REGRA', type: 'C', size: 250, description: 'Regra' },
+                        { name: 'X7_SEEK', type: 'C', size: 250, description: 'Chave de Busca' },
+                        { name: 'X7_ALIAS', type: 'C', size: 10, description: 'Alias' },
+                        { name: 'X7_ORDEM', type: 'C', size: 2, description: 'Ordem do Índice' },
+                        { name: 'X7_CONDIC', type: 'C', size: 250, description: 'Condição' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X7_CAMPO+X7_SEQUENC', description: 'Por Campo/Sequência' }
+                );
+                break;
+
+            case 'SX9': // Relacionamentos
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'X9_DOM', type: 'C', size: 10, description: 'Tabela Dominante' },
+                        { name: 'X9_IDENT', type: 'C', size: 3, description: 'Identificador' },
+                        { name: 'X9_CDOM', type: 'C', size: 10, description: 'Campo Dominante' },
+                        { name: 'X9_EXPDOM', type: 'C', size: 250, description: 'Expressão Dominante' },
+                        { name: 'X9_DEPD', type: 'C', size: 10, description: 'Tabela Dependente' },
+                        { name: 'X9_CDEP', type: 'C', size: 10, description: 'Campo Dependente' },
+                        { name: 'X9_EXPDEP', type: 'C', size: 250, description: 'Expressão Dependente' },
+                        { name: 'X9_PROPRI', type: 'C', size: 1, description: 'Proprietário' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'X9_DOM+X9_IDENT', description: 'Por Dominante/Identificador' }
+                );
+                break;
+
+            case 'SIX': // Índices das Tabelas
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'INDICE', type: 'C', size: 10, description: 'Tabela' },
+                        { name: 'ORDEM', type: 'C', size: 2, description: 'Ordem do Índice' },
+                        { name: 'CHAVE', type: 'C', size: 250, description: 'Chave do Índice' },
+                        { name: 'DESCRICAO', type: 'C', size: 50, description: 'Descrição' },
+                        { name: 'DESCSPA', type: 'C', size: 50, description: 'Descrição Espanhol' },
+                        { name: 'DESCENG', type: 'C', size: 50, description: 'Descrição Inglês' },
+                        { name: 'PROPRI', type: 'C', size: 1, description: 'Proprietário' },
+                        { name: 'F3', type: 'C', size: 10, description: 'Consulta F3' },
+                        { name: 'NICKNAME', type: 'C', size: 15, description: 'Apelido' },
+                        { name: 'SHOWPESQ', type: 'C', size: 1, description: 'Mostrar na Pesquisa' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'INDICE+ORDEM', description: 'Por Tabela/Ordem' }
+                );
+                break;
+
+            case 'SXG': // Grupos de Campos
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'XG_GRUPO', type: 'C', size: 3, description: 'Grupo' },
+                        { name: 'XG_DESCRI', type: 'C', size: 30, description: 'Descrição' },
+                        { name: 'XG_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                        { name: 'XG_TAMANHO', type: 'N', size: 3, description: 'Tamanho' },
+                        { name: 'XG_DECIMAL', type: 'N', size: 2, description: 'Decimais' },
+                        { name: 'XG_VALID', type: 'C', size: 100, description: 'Validação' },
+                        { name: 'XG_PICTURE', type: 'C', size: 40, description: 'Picture' }
+                    );
+                }
+                indices.push(
+                    { order: '1', key: 'XG_GRUPO', description: 'Por Grupo' }
+                );
+                break;
+
             default:
                 // Gerador Genérico para outras tabelas não mapeadas detalhadamente
-                fields.push(
-                    { name: prefix + '_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
-                    { name: prefix + '_COD', type: 'C', size: 6, description: 'Código Principal' },
-                    { name: prefix + '_DESC', type: 'C', size: 30, description: 'Descrição/Nome' },
-                    { name: prefix + '_TIPO', type: 'C', size: 1, description: 'Tipo' },
-                    { name: prefix + '_DATA', type: 'D', size: 8, description: 'Data de Referência' },
-                    { name: prefix + '_VALOR', type: 'N', size: 12, decimal: 2, description: 'Valor Monetário' },
-                    { name: prefix + '_QUANT', type: 'N', size: 12, decimal: 2, description: 'Quantidade' },
-                    { name: prefix + '_STATUS', type: 'C', size: 1, description: 'Status' },
-                    { name: prefix + '_OBS', type: 'M', size: 80, description: 'Observações (Memo)' }
-                );
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: prefix + '_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                        { name: prefix + '_COD', type: 'C', size: 6, description: 'Código Principal' },
+                        { name: prefix + '_DESC', type: 'C', size: 30, description: 'Descrição/Nome' },
+                        { name: prefix + '_TIPO', type: 'C', size: 1, description: 'Tipo' },
+                        { name: prefix + '_DATA', type: 'D', size: 8, description: 'Data de Referência' },
+                        { name: prefix + '_VALOR', type: 'N', size: 12, decimal: 2, description: 'Valor Monetário' },
+                        { name: prefix + '_QUANT', type: 'N', size: 12, decimal: 2, description: 'Quantidade' },
+                        { name: prefix + '_STATUS', type: 'C', size: 1, description: 'Status' },
+                        { name: prefix + '_OBS', type: 'M', size: 80, description: 'Observações (Memo)' }
+                    );
+                }
                 indices.push(
                     { order: '1', key: prefix + '_FILIAL+' + prefix + '_COD', description: 'Chave Primária Padrão' },
                     { order: '2', key: prefix + '_FILIAL+' + prefix + '_DESC', description: 'Ordem Alfabética' }
