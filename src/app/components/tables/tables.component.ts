@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdvplDataService, AdvPLTable } from '../../services/advpl-data.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-tables',
@@ -29,8 +30,12 @@ export class TablesComponent implements OnInit {
     constructor(private advplService: AdvplDataService) { }
 
     ngOnInit() {
-        this.advplService.getAllTables().subscribe(data => {
-            this.tables = data;
+        // Load both Tables (SX2) and Fields (SX3)
+        forkJoin({
+            tables: this.advplService.getAllTables(),
+            fields: this.advplService.loadFields()
+        }).subscribe(({ tables }) => {
+            this.tables = tables;
             this.applyFilters();
         });
     }

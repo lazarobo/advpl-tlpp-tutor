@@ -45,6 +45,7 @@ export interface AdvPLTable {
 export class AdvplDataService {
 
     private sx2Data: AdvPLTable[] = [];
+    private sx3Fields: Map<string, AdvPLField[]> = new Map();
 
     constructor(private http: HttpClient) { }
 
@@ -52,37 +53,56 @@ export class AdvplDataService {
 
     getTableDetails(tableName: string): { fields: AdvPLField[], indices: AdvPLIndex[] } {
         const prefix = tableName.substring(1, 3); // Ex: SA1 -> A1
-        const fields: AdvPLField[] = [];
+        let fields: AdvPLField[] = [];
         const indices: AdvPLIndex[] = [];
 
-        // Definições Manuais para as Principais Tabelas
+        // Try exact match first, then fallback to without 'S' prefix for legacy tables
+        let sx3TableName = tableName;
+        if (!this.sx3Fields.has(tableName) && tableName.startsWith('S')) {
+            sx3TableName = tableName.substring(1);
+        }
+
+        console.log('getTableDetails called for:', tableName, '-> SX3 name:', sx3TableName);
+        console.log('sx3Fields size:', this.sx3Fields.size);
+        console.log('Has sx3TableName:', this.sx3Fields.has(sx3TableName));
+
+        // Check SX3 cache first
+        if (this.sx3Fields.has(sx3TableName)) {
+            fields = [...(this.sx3Fields.get(sx3TableName) || [])];
+            console.log('Found', fields.length, 'fields from SX3 for', sx3TableName);
+        }
+
+        // Definições Manuais (Indices e Fallback de Campos)
         switch (tableName) {
             case 'SA1': // Clientes
-                fields.push(
-                    { name: 'A1_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
-                    { name: 'A1_COD', type: 'C', size: 6, description: 'Código do Cliente' },
-                    { name: 'A1_LOJA', type: 'C', size: 2, description: 'Loja do Cliente' },
-                    { name: 'A1_NOME', type: 'C', size: 40, description: 'Nome/Razão Social' },
-                    { name: 'A1_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
-                    { name: 'A1_END', type: 'C', size: 40, description: 'Endereço' },
-                    { name: 'A1_TIPO', type: 'C', size: 1, description: 'Tipo (F-Físico/J-Jurídico/X-Export)' },
-                    { name: 'A1_EST', type: 'C', size: 2, description: 'Estado (UF)' },
-                    { name: 'A1_MUN', type: 'C', size: 15, description: 'Município' },
-                    { name: 'A1_BAIRRO', type: 'C', size: 20, description: 'Bairro' },
-                    { name: 'A1_CEP', type: 'C', size: 8, description: 'CEP' },
-                    { name: 'A1_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' },
-                    { name: 'A1_INSCR', type: 'C', size: 20, description: 'Inscrição Estadual' },
-                    { name: 'A1_EMAIL', type: 'C', size: 60, description: 'Email' },
-                    { name: 'A1_TEL', type: 'C', size: 15, description: 'Telefone' },
-                    { name: 'A1_VEND', type: 'C', size: 6, description: 'Código do Vendedor' },
-                    { name: 'A1_ULTCOM', type: 'D', size: 8, description: 'Data da Última Compra' },
-                    { name: 'A1_MSALDO', type: 'N', size: 14, decimal: 2, description: 'Saldo Financeiro' },
-                    { name: 'A1_NATUREZ', type: 'C', size: 10, description: 'Natureza Financeira' },
-                    { name: 'A1_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
-                    { name: 'A1_RISCO', type: 'C', size: 1, description: 'Grau de Risco' },
-                    { name: 'A1_LC', type: 'N', size: 14, decimal: 2, description: 'Limite de Crédito' },
-                    { name: 'A1_COMPLEM', type: 'C', size: 50, description: 'Complemento do Endereço' }
-                );
+                if (fields.length === 0) {
+                    fields.push(
+
+                        { name: 'A1_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                        { name: 'A1_COD', type: 'C', size: 6, description: 'Código do Cliente' },
+                        { name: 'A1_LOJA', type: 'C', size: 2, description: 'Loja do Cliente' },
+                        { name: 'A1_NOME', type: 'C', size: 40, description: 'Nome/Razão Social' },
+                        { name: 'A1_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
+                        { name: 'A1_END', type: 'C', size: 40, description: 'Endereço' },
+                        { name: 'A1_TIPO', type: 'C', size: 1, description: 'Tipo (F-Físico/J-Jurídico/X-Export)' },
+                        { name: 'A1_EST', type: 'C', size: 2, description: 'Estado (UF)' },
+                        { name: 'A1_MUN', type: 'C', size: 15, description: 'Município' },
+                        { name: 'A1_BAIRRO', type: 'C', size: 20, description: 'Bairro' },
+                        { name: 'A1_CEP', type: 'C', size: 8, description: 'CEP' },
+                        { name: 'A1_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' },
+                        { name: 'A1_INSCR', type: 'C', size: 20, description: 'Inscrição Estadual' },
+                        { name: 'A1_EMAIL', type: 'C', size: 60, description: 'Email' },
+                        { name: 'A1_TEL', type: 'C', size: 15, description: 'Telefone' },
+                        { name: 'A1_VEND', type: 'C', size: 6, description: 'Código do Vendedor' },
+                        { name: 'A1_ULTCOM', type: 'D', size: 8, description: 'Data da Última Compra' },
+                        { name: 'A1_MSALDO', type: 'N', size: 14, decimal: 2, description: 'Saldo Financeiro' },
+                        { name: 'A1_NATUREZ', type: 'C', size: 10, description: 'Natureza Financeira' },
+                        { name: 'A1_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
+                        { name: 'A1_RISCO', type: 'C', size: 1, description: 'Grau de Risco' },
+                        { name: 'A1_LC', type: 'N', size: 14, decimal: 2, description: 'Limite de Crédito' },
+                        { name: 'A1_COMPLEM', type: 'C', size: 50, description: 'Complemento do Endereço' }
+                    );
+                }
                 indices.push(
                     { order: '1', key: 'A1_FILIAL+A1_COD+A1_LOJA', description: 'Por Código' },
                     { order: '2', key: 'A1_FILIAL+A1_NOME', description: 'Por Nome' },
@@ -94,28 +114,30 @@ export class AdvplDataService {
                 break;
 
             case 'SA2': // Fornecedores
-                fields.push(
-                    { name: 'A2_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
-                    { name: 'A2_COD', type: 'C', size: 6, description: 'Código do Fornecedor' },
-                    { name: 'A2_LOJA', type: 'C', size: 2, description: 'Loja' },
-                    { name: 'A2_NOME', type: 'C', size: 40, description: 'Razão Social' },
-                    { name: 'A2_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
-                    { name: 'A2_END', type: 'C', size: 40, description: 'Endereço' },
-                    { name: 'A2_EST', type: 'C', size: 2, description: 'Estado (UF)' },
-                    { name: 'A2_MUN', type: 'C', size: 15, description: 'Município' },
-                    { name: 'A2_BAIRRO', type: 'C', size: 20, description: 'Bairro' },
-                    { name: 'A2_CEP', type: 'C', size: 8, description: 'CEP' },
-                    { name: 'A2_TIPO', type: 'C', size: 1, description: 'Tipo (F/J)' },
-                    { name: 'A2_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' },
-                    { name: 'A2_INSCR', type: 'C', size: 20, description: 'Inscrição Estadual' },
-                    { name: 'A2_TEL', type: 'C', size: 15, description: 'Telefone' },
-                    { name: 'A2_EMAIL', type: 'C', size: 60, description: 'Email' },
-                    { name: 'A2_NATUREZ', type: 'C', size: 10, description: 'Natureza Financeira' },
-                    { name: 'A2_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
-                    { name: 'A2_BANCO', type: 'C', size: 3, description: 'Banco' },
-                    { name: 'A2_AGENCIA', type: 'C', size: 5, description: 'Agência' },
-                    { name: 'A2_NUMCON', type: 'C', size: 10, description: 'Conta Bancária' }
-                );
+                if (fields.length === 0) {
+                    fields.push(
+                        { name: 'A2_FILIAL', type: 'C', size: 2, description: 'Filial do Sistema' },
+                        { name: 'A2_COD', type: 'C', size: 6, description: 'Código do Fornecedor' },
+                        { name: 'A2_LOJA', type: 'C', size: 2, description: 'Loja' },
+                        { name: 'A2_NOME', type: 'C', size: 40, description: 'Razão Social' },
+                        { name: 'A2_NREDUZ', type: 'C', size: 20, description: 'Nome Fantasia' },
+                        { name: 'A2_END', type: 'C', size: 40, description: 'Endereço' },
+                        { name: 'A2_EST', type: 'C', size: 2, description: 'Estado (UF)' },
+                        { name: 'A2_MUN', type: 'C', size: 15, description: 'Município' },
+                        { name: 'A2_BAIRRO', type: 'C', size: 20, description: 'Bairro' },
+                        { name: 'A2_CEP', type: 'C', size: 8, description: 'CEP' },
+                        { name: 'A2_TIPO', type: 'C', size: 1, description: 'Tipo (F/J)' },
+                        { name: 'A2_CGC', type: 'C', size: 14, description: 'CNPJ/CPF' },
+                        { name: 'A2_INSCR', type: 'C', size: 20, description: 'Inscrição Estadual' },
+                        { name: 'A2_TEL', type: 'C', size: 15, description: 'Telefone' },
+                        { name: 'A2_EMAIL', type: 'C', size: 60, description: 'Email' },
+                        { name: 'A2_NATUREZ', type: 'C', size: 10, description: 'Natureza Financeira' },
+                        { name: 'A2_CONTA', type: 'C', size: 20, description: 'Conta Contábil' },
+                        { name: 'A2_BANCO', type: 'C', size: 3, description: 'Banco' },
+                        { name: 'A2_AGENCIA', type: 'C', size: 5, description: 'Agência' },
+                        { name: 'A2_NUMCON', type: 'C', size: 10, description: 'Conta Bancária' }
+                    );
+                }
                 indices.push(
                     { order: '1', key: 'A2_FILIAL+A2_COD+A2_LOJA', description: 'Por Código' },
                     { order: '2', key: 'A2_FILIAL+A2_NOME', description: 'Por Nome' },
@@ -814,7 +836,42 @@ export class AdvplDataService {
         );
     }
 
+    loadFields(): Observable<any> {
+        if (this.sx3Fields.size > 0) {
+            return of(true);
+        }
+
+        return this.http.get<any>('assets/SX3.json').pipe(
+            tap(response => {
+                const items = response.items || [];
+                console.log('SX3.json loaded, processing', items.length, 'field records...');
+                items.forEach((item: any) => {
+                    const tableName = item.x3_arquivo;
+                    if (!tableName) return;
+
+                    if (!this.sx3Fields.has(tableName)) {
+                        this.sx3Fields.set(tableName, []);
+                    }
+
+                    this.sx3Fields.get(tableName)?.push({
+                        name: item.x3_campo,
+                        type: item.x3_tipo,
+                        size: item.x3_tamanho,
+                        decimal: item.x3_decimal,
+                        description: item.x3_titulo
+                    });
+                });
+                console.log('SX3 fields loaded for', this.sx3Fields.size, 'tables');
+            }),
+            catchError(err => {
+                console.error('Failed to load SX3 fields:', err);
+                return of(false);
+            })
+        );
+    }
+
     getAllTables(): Observable<AdvPLTable[]> {
         return this.loadTables();
     }
 }
+
