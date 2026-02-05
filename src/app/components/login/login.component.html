@@ -1,0 +1,65 @@
+<div class="login-page">
+    <!-- LADO ESQUERDO: BRANDING -->
+    <div class="brand-section">
+        <div class="animated-bg">
+            <div class="orb o1"></div>
+            <div class="orb o2"></div>
+        </div>
+
+        <div class="brand-content">
+            <div class="logo-wrapper">
+                <img src="https://userfunction.com.br/wp-content/uploads/2021/09/LOGO-BRANCO-3.png"
+                    alt="UserFunction Logo" class="brand-logo">
+            </div>
+            <h1>AdvPL & TLPP <span class="highlight">Tutor</span></h1>
+            <p>Domine a linguagem do Protheus com desafios práticos e documentação interativa.</p>
+        </div>
+    </div>
+
+    <!-- LADO DIREITO: FORMULÁRIO -->
+    <div class="form-section">
+        <div class="login-card">
+            <div class="form-header">
+                <h2>Bem-vindo de volta!</h2>
+                <p>Entre com suas credenciais para continuar.</p>
+            </div>
+
+            <div class="input-group">
+                <label>Usuário</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" [(ngModel)]="username" placeholder="Ex: admin" (keyup.enter)="onLogin()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Senha</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" [(ngModel)]="password" placeholder="••••••••" (keyup.enter)="onLogin()">
+                </div>
+            </div>
+
+            <div class="error-msg" *ngIf="errorMsg">
+                <span class="error-icon">⚠️</span> {{ errorMsg }}
+            </div>
+
+            <div class="actions">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Lembrar de mim</label>
+                </div>
+                <a href="#" class="forgot-pass">Esqueceu a senha?</a>
+            </div>
+
+            <button class="btn-login" [class.loading]="isLoading" (click)="onLogin()" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Entrar</span>
+                <div class="loader" *ngIf="isLoading"></div>
+            </button>
+
+            <div class="footer-register">
+                Não tem uma conta? <a href="#">Crie agora</a>
+            </div>
+        </div>
+    </div>
+</div>

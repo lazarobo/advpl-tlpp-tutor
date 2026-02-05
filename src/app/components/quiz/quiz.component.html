@@ -4,7 +4,7 @@
         <p>Escolha um tópico e teste seus conhecimentos.</p>
     </header>
 
-    <!-- TÓPICOS (MENU INICIAL) -->
+    <!-- 1. TÓPICOS (MENU PRINCIPAL) -->
     <div class="topics-grid" *ngIf="!selectedTopic">
         <div class="topic-card glass-card" *ngFor="let topic of topics" (click)="selectTopic(topic)">
             <div class="topic-icon">{{ topic.icon }}</div>
@@ -12,14 +12,32 @@
                 <h2>{{ topic.title }}</h2>
                 <p>{{ topic.description }}</p>
             </div>
-            <div class="topic-badge">{{ topic.questions.length }} Questões</div>
+            <div class="topic-badge">{{ topic.quizzes.length }} Quizzes</div>
         </div>
     </div>
 
-    <!-- ÁREA DO QUIZ -->
-    <div class="quiz-active" *ngIf="selectedTopic">
+    <!-- 2. LISTA DE QUIZZES DO TÓPICO -->
+    <div class="quizzes-grid" *ngIf="selectedTopic && !selectedQuiz">
+        <button class="btn-back-top" (click)="goBackToTopics()">← Voltar aos Tópicos</button>
+        <h2 class="section-title">Quizzes de {{ selectedTopic.title }}</h2>
 
-        <button class="btn-back" (click)="goBackToTopics()" *ngIf="!showResults">← Voltar aos Tópicos</button>
+        <div class="quiz-selection-card glass-card" *ngFor="let quiz of selectedTopic.quizzes"
+            (click)="selectQuiz(quiz)">
+            <div class="quiz-level-badge" [ngClass]="{
+                'iniciante': quiz.level === 'Iniciante',
+                'medio': quiz.level === 'Intermediário',
+                'avancado': quiz.level === 'Avançado'
+            }">{{ quiz.level }}</div>
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.questions.length }} Questões</p>
+            <button class="btn-start">Iniciar</button>
+        </div>
+    </div>
+
+    <!-- 3. ÁREA DE JOGO (PERGUNTAS) -->
+    <div class="quiz-active" *ngIf="selectedQuiz">
+
+        <button class="btn-back" (click)="goBackToQuizzes()" *ngIf="!showResults">← Cancelar Quiz</button>
 
         <div class="quiz-content" *ngIf="!showResults">
             <div class="progress-bar">
@@ -71,10 +89,11 @@
             </div>
         </div>
 
+        <!-- TELA DE RESULTADOS -->
         <div class="results-card glass-card" *ngIf="showResults">
             <div class="result-header">
                 <div class="trophy">🏆</div>
-                <h2>{{ selectedTopic.title }} - Concluído!</h2>
+                <h2>{{ selectedQuiz.title }} - Concluído!</h2>
             </div>
 
             <div class="score-display">
@@ -82,15 +101,15 @@
                 <span class="total">de {{ totalQuestions }}</span>
             </div>
 
-            <p class="performance-msg" *ngIf="score === totalQuestions">Perfeito! Domínio total do assunto!</p>
+            <p class="performance-msg" *ngIf="score === totalQuestions">Perfeito! Você é um mestre neste assunto!</p>
             <p class="performance-msg" *ngIf="score < totalQuestions && score > totalQuestions / 2">Muito bom! Continue
-                estudando para gabaritar.</p>
-            <p class="performance-msg" *ngIf="score <= totalQuestions / 2">Precisa revisar alguns conceitos. Tente
-                novamente!</p>
+                estudando.</p>
+            <p class="performance-msg" *ngIf="score <= totalQuestions / 2">Precisa revisar. Tente novamente!</p>
 
             <div class="result-actions">
                 <button class="btn-primary" (click)="restartQuiz()">Tentar Novamente</button>
-                <button class="btn-secondary" (click)="goBackToTopics()">Escolher Outro Tópico</button>
+                <button class="btn-secondary" (click)="goBackToQuizzes()">Escolher Outro Quiz</button>
+                <button class="btn-text" (click)="goBackToTopics()">Menu Principal</button>
             </div>
         </div>
     </div>

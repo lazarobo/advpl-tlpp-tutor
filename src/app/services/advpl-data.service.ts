@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
@@ -956,6 +956,78 @@ export class AdvplDataService {
         { name: 'FwSqlSelect', category: 'SQL', description: 'Cria comando SQL Select estruturado', syntax: 'FwSqlSelect():New()', parameters: [], returnType: 'Object', example: 'oSql := FwSqlSelect():New()', tlppCompatible: true },
         { name: 'Posicione', category: 'Banco de Dados', description: 'Busca campo em outra tabela (One-liner)', syntax: 'Posicione(cAlias, nIndex, cKey, cField)', parameters: [], returnType: 'Any', example: 'cNome := Posicione("SA1", 1, xFilial("SA1")+"001", "A1_NOME")', tlppCompatible: true },
         { name: 'ExistCpo', category: 'Dicionário', description: 'Valida se valor existe na tabela (SX3)', syntax: 'ExistCpo(cAlias, xValue, nIndex)', parameters: [], returnType: 'Logical', example: 'If ExistCpo("SB1", "PROD001")', tlppCompatible: true },
+
+        // ===================== GENERIC QUERY =====================
+        { name: 'FWPreparedStatement', category: 'GenericQuery', description: 'Classe para queries seguras com bind de parametros', syntax: 'FWPreparedStatement():New()', parameters: [], returnType: 'Object', example: 'oStmt := FWPreparedStatement():New()', tlppCompatible: true },
+        { name: 'SetQuery', category: 'GenericQuery', description: 'Define query SQL com placeholders', syntax: 'oStmt:SetQuery(cQuery)', parameters: ['cQuery: SQL com ?'], returnType: 'Self', example: 'oStmt:SetQuery(\"SELECT * FROM SA1010\")', tlppCompatible: true },
+        { name: 'SetString', category: 'GenericQuery', description: 'Vincula parametro String', syntax: 'oStmt:SetString(nPos, cValue)', parameters: ['nPos: Posicao'], returnType: 'Self', example: 'oStmt:SetString(1, \"TOTVS\")', tlppCompatible: true },
+        { name: 'SetNumeric', category: 'GenericQuery', description: 'Vincula parametro Numerico', syntax: 'oStmt:SetNumeric(nPos, nValue)', parameters: ['nPos: Posicao'], returnType: 'Self', example: 'oStmt:SetNumeric(1, 1000)', tlppCompatible: true },
+        { name: 'SetDate', category: 'GenericQuery', description: 'Vincula parametro Data', syntax: 'oStmt:SetDate(nPos, dValue)', parameters: ['nPos: Posicao'], returnType: 'Self', example: 'oStmt:SetDate(1, Date())', tlppCompatible: true },
+        { name: 'xQuery', category: 'GenericQuery', description: 'Executa query e retorna alias', syntax: 'oStmt:xQuery()', parameters: [], returnType: 'Character', example: 'cAlias := oStmt:xQuery()', tlppCompatible: true },
+        { name: 'TCSqlToArr', category: 'GenericQuery', description: 'Executa query e retorna array', syntax: 'TCSqlToArr(cQuery)', parameters: ['cQuery: SQL'], returnType: 'Array', example: 'aResult := TCSqlToArr(\"SELECT A1_COD FROM SA1010\")', tlppCompatible: true },
+        { name: 'GetFixQuery', category: 'GenericQuery', description: 'Retorna query final montada', syntax: 'oStmt:GetFixQuery()', parameters: [], returnType: 'Character', example: 'cSql := oStmt:GetFixQuery()', tlppCompatible: true },
+
+        // ===================== REST TLPP - Annotations =====================
+        { name: '@Get', category: 'REST TLPP', description: 'Annotation para endpoint HTTP GET', syntax: '@Get(\"/path\")', parameters: ['path: Rota'], returnType: 'N/A', example: '@Get(\"/api/clientes\")', tlppCompatible: true },
+        { name: '@Post', category: 'REST TLPP', description: 'Annotation para endpoint HTTP POST', syntax: '@Post(\"/path\")', parameters: ['path: Rota'], returnType: 'N/A', example: '@Post(\"/api/clientes\")', tlppCompatible: true },
+        { name: '@Put', category: 'REST TLPP', description: 'Annotation para endpoint HTTP PUT', syntax: '@Put(\"/path/:id\")', parameters: ['path: Rota'], returnType: 'N/A', example: '@Put(\"/api/clientes/:id\")', tlppCompatible: true },
+        { name: '@Delete', category: 'REST TLPP', description: 'Annotation para endpoint HTTP DELETE', syntax: '@Delete(\"/path/:id\")', parameters: ['path: Rota'], returnType: 'N/A', example: '@Delete(\"/api/clientes/:id\")', tlppCompatible: true },
+        { name: '@Path', category: 'REST TLPP', description: 'Define path base do servico REST', syntax: '@Path(\"/base\")', parameters: ['base: Path raiz'], returnType: 'N/A', example: '@Path(\"/api/v1\")', tlppCompatible: true },
+
+        // ===================== REST TLPP - Self Methods =====================
+        { name: 'GetBodyText', category: 'REST TLPP', description: 'Obtem body da requisicao', syntax: 'Self:GetBodyText()', parameters: [], returnType: 'Character', example: 'cJson := Self:GetBodyText()', tlppCompatible: true },
+        { name: 'GetPathParam', category: 'REST TLPP', description: 'Obtem parametro da URL', syntax: 'Self:GetPathParam(cName)', parameters: ['cName: Nome'], returnType: 'Character', example: 'cId := Self:GetPathParam(\"id\")', tlppCompatible: true },
+        { name: 'GetQueryParam', category: 'REST TLPP', description: 'Obtem query string', syntax: 'Self:GetQueryParam(cName)', parameters: ['cName: Nome'], returnType: 'Character', example: 'cPage := Self:GetQueryParam(\"page\")', tlppCompatible: true },
+        { name: 'SetResponse', category: 'REST TLPP', description: 'Define resposta HTTP', syntax: 'Self:SetResponse(cContent)', parameters: ['cContent: Conteudo'], returnType: 'Nil', example: 'Self:SetResponse(oJson:ToJson())', tlppCompatible: true },
+        { name: 'SetStatusCode', category: 'REST TLPP', description: 'Define codigo HTTP', syntax: 'Self:SetStatusCode(nCode)', parameters: ['nCode: Codigo'], returnType: 'Nil', example: 'Self:SetStatusCode(201)', tlppCompatible: true },
+
+        // ===================== REST TLPP - FWRest Client =====================
+        { name: 'FWRest', category: 'REST TLPP', description: 'Cliente para consumir APIs REST', syntax: 'FWRest():New(cBaseUrl)', parameters: ['cBaseUrl: URL base'], returnType: 'Object', example: 'oRest := FWRest():New(\"https://api.com\")', tlppCompatible: true },
+        { name: 'SetPath', category: 'REST TLPP', description: 'Define endpoint da requisicao', syntax: 'oRest:SetPath(cPath)', parameters: ['cPath: Caminho'], returnType: 'Self', example: 'oRest:SetPath(\"/users\")', tlppCompatible: true },
+        { name: 'GetResult', category: 'REST TLPP', description: 'Obtem corpo da resposta', syntax: 'oRest:GetResult()', parameters: [], returnType: 'Character', example: 'cJson := oRest:GetResult()', tlppCompatible: true },
+        { name: 'GetHTTPCode', category: 'REST TLPP', description: 'Obtem codigo HTTP da resposta', syntax: 'oRest:GetHTTPCode()', parameters: [], returnType: 'Numeric', example: 'nCode := oRest:GetHTTPCode()', tlppCompatible: true },
+
+        // ===================== JSON =====================
+        { name: 'JsonObject', category: 'JSON', description: 'Classe para manipulacao de JSON', syntax: 'JsonObject():New()', parameters: [], returnType: 'Object', example: 'oJson := JsonObject():New()', tlppCompatible: true },
+        { name: 'JsonArray', category: 'JSON', description: 'Classe para arrays JSON', syntax: 'JsonArray():New()', parameters: [], returnType: 'Object', example: 'oArr := JsonArray():New()', tlppCompatible: true },
+        { name: 'ToJson', category: 'JSON', description: 'Converte objeto para string JSON', syntax: 'oJson:ToJson()', parameters: [], returnType: 'Character', example: 'cJson := oJson:ToJson()', tlppCompatible: true },
+        { name: 'FromJson', category: 'JSON', description: 'Carrega string JSON', syntax: 'oJson:FromJson(cJson)', parameters: ['cJson: String'], returnType: 'Logical', example: 'oJson:FromJson(cJsonString)', tlppCompatible: true },
+
+        // ===================== TLPP Classes =====================
+        { name: 'HashMap', category: 'TLPP', description: 'Mapeamento chave-valor', syntax: 'HashMap():New()', parameters: [], returnType: 'Object', example: 'oMap := HashMap():New()', tlppCompatible: true },
+        { name: 'ArrayList', category: 'TLPP', description: 'Lista dinamica com metodos OO', syntax: 'ArrayList():New()', parameters: [], returnType: 'Object', example: 'oList := ArrayList():New()', tlppCompatible: true },
+        { name: 'StringBuilder', category: 'TLPP', description: 'Concatenacao eficiente de strings', syntax: 'StringBuilder():New()', parameters: [], returnType: 'Object', example: 'oSb := StringBuilder():New()', tlppCompatible: true },
+        { name: 'Logger', category: 'TLPP', description: 'Log estruturado', syntax: 'Logger():New(cName)', parameters: ['cName: Nome'], returnType: 'Object', example: 'oLog := Logger():New(\"Rotina\")', tlppCompatible: true },
+
+        // ===================== Multithreading =====================
+        { name: 'StartJob', category: 'Multithreading', description: 'Inicia Job para processamento paralelo', syntax: 'StartJob(cFunc, cEnv, lWait, aParams)', parameters: ['cFunc: Funcao'], returnType: 'Logical', example: 'StartJob(\"U_PROC\", \"SIGAFAT\", .F., {})', tlppCompatible: true },
+        { name: 'CallProc', category: 'Multithreading', description: 'Chama funcao em outra thread', syntax: 'CallProc(cServer, cEnv, cFunc, aParams)', parameters: ['cServer: Server'], returnType: 'Any', example: 'xRet := CallProc(\"localhost\", \"SIG\", \"U_X\", {})', tlppCompatible: true },
+        { name: 'ThreadID', category: 'Multithreading', description: 'ID da thread atual', syntax: 'ThreadID()', parameters: [], returnType: 'Numeric', example: 'nThread := ThreadID()', tlppCompatible: true },
+        { name: 'SleepMs', category: 'Multithreading', description: 'Pausa execucao por N ms', syntax: 'Sleep(nMs)', parameters: ['nMs: Milissegundos'], returnType: 'Nil', example: 'Sleep(1000)', tlppCompatible: true },
+        { name: 'MutexCreate', category: 'Multithreading', description: 'Cria mutex para concorrencia', syntax: 'MutexCreate()', parameters: [], returnType: 'Numeric', example: 'nMutex := MutexCreate()', tlppCompatible: true },
+        { name: 'MutexLock', category: 'Multithreading', description: 'Adquire lock no mutex', syntax: 'MutexLock(nMutex)', parameters: ['nMutex: Handle'], returnType: 'Nil', example: 'MutexLock(nMutex)', tlppCompatible: true },
+        { name: 'MutexUnlock', category: 'Multithreading', description: 'Libera lock do mutex', syntax: 'MutexUnlock(nMutex)', parameters: ['nMutex: Handle'], returnType: 'Nil', example: 'MutexUnlock(nMutex)', tlppCompatible: true },
+
+        // ===================== Automacao =====================
+        { name: 'MsExecAuto', category: 'Automacao', description: 'Execucao automatica de rotinas', syntax: 'MsExecAuto({|x| Rotina(x)}, aParams, nOpc)', parameters: ['nOpc: 3=Inc, 4=Alt, 5=Exc'], returnType: 'Nil', example: 'MsExecAuto({|x| MATA030(x)}, aCliente, 3)', tlppCompatible: true },
+        { name: 'xFilial', category: 'Sistema', description: 'Retorna filial para filtro', syntax: 'xFilial(cAlias)', parameters: ['cAlias: Tabela'], returnType: 'Character', example: 'cFil := xFilial(\"SA1\")', tlppCompatible: true },
+        { name: 'SuperGetMV', category: 'Dicionario', description: 'Obtem parametro SX6', syntax: 'SuperGetMV(cParam, lHelp, xDefault)', parameters: ['cParam: Nome'], returnType: 'Any', example: 'nAliq := SuperGetMV(\"MV_TXICMS\")', tlppCompatible: true },
+        { name: 'PutMV', category: 'Dicionario', description: 'Grava parametro SX6', syntax: 'PutMV(cParam, xValue)', parameters: ['cParam: Nome'], returnType: 'Nil', example: 'PutMV(\"MV_PARAM\", \"VAL\")', tlppCompatible: true },
+        { name: 'Conout', category: 'Debug', description: 'Escreve no console do servidor', syntax: 'Conout(cMsg)', parameters: ['cMsg: Mensagem'], returnType: 'Nil', example: 'Conout(\"[LOG] Teste\")', tlppCompatible: true },
+
+        // ===================== Criptografia e Rede =====================
+        { name: 'EncodeBase64', category: 'Criptografia', description: 'Codifica em Base64', syntax: 'EncodeBase64(cInput)', parameters: ['cInput: String'], returnType: 'Character', example: 'cB64 := EncodeBase64(\"texto\")', tlppCompatible: true },
+        { name: 'DecodeBase64', category: 'Criptografia', description: 'Decodifica Base64', syntax: 'DecodeBase64(cB64)', parameters: ['cB64: String'], returnType: 'Character', example: 'cOriginal := DecodeBase64(cB64)', tlppCompatible: true },
+        { name: 'MD5', category: 'Criptografia', description: 'Gera hash MD5', syntax: 'MD5(cInput)', parameters: ['cInput: String'], returnType: 'Character', example: 'cHash := MD5(cSenha)', tlppCompatible: true },
+        { name: 'SHA256', category: 'Criptografia', description: 'Gera hash SHA256', syntax: 'SHA256(cInput)', parameters: ['cInput: String'], returnType: 'Character', example: 'cHash := SHA256(cDoc)', tlppCompatible: true },
+        { name: 'FWUUIDv4', category: 'Sistema', description: 'Gera UUID v4 unico', syntax: 'FWUUIDv4()', parameters: [], returnType: 'Character', example: 'cUUID := FWUUIDv4()', tlppCompatible: true },
+        { name: 'HTTPSGet', category: 'Rede', description: 'Requisicao HTTPS GET', syntax: 'HTTPSGet(cUrl, cParams, nTimeout)', parameters: ['cUrl: URL'], returnType: 'Character', example: 'cResp := HTTPSGet(\"https://api.com\")', tlppCompatible: true },
+        { name: 'HTTPSPost', category: 'Rede', description: 'Requisicao HTTPS POST', syntax: 'HTTPSPost(cUrl, cHeaders, cBody)', parameters: ['cBody: Corpo'], returnType: 'Character', example: 'cResp := HTTPSPost(\"https://api.com\", \"\", cJson)', tlppCompatible: true },
+
+        // ===================== Validacao =====================
+        { name: 'CGC', category: 'Validacao', description: 'Valida CPF ou CNPJ', syntax: 'CGC(cDoc)', parameters: ['cDoc: CPF/CNPJ'], returnType: 'Logical', example: 'If CGC(cCNPJ)', tlppCompatible: true },
+        { name: 'NaoVazio', category: 'Validacao', description: 'Valida se nao esta vazio', syntax: 'NaoVazio()', parameters: [], returnType: 'Logical', example: 'NaoVazio()', tlppCompatible: true },
+        { name: 'Pertence', category: 'Validacao', description: 'Valida se pertence a lista', syntax: 'Pertence(cList)', parameters: ['cList: Opcoes'], returnType: 'Logical', example: 'Pertence(\"SIM/NAO\")', tlppCompatible: true },
     ];
 
     getCategories(): string[] {
@@ -1055,4 +1127,5 @@ export class AdvplDataService {
         return this.loadTables();
     }
 }
+
 

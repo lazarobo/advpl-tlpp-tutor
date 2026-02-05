@@ -34,6 +34,114 @@
     padding: 1rem;
 }
 
+/* QUIZZES SELECTION GRID (LEVEL 2) */
+.quizzes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.btn-back-top {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.btn-back-top:hover {
+    color: var(--primary);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary);
+    padding-left: 1rem;
+}
+
+.quiz-selection-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quiz-selection-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+    border-color: var(--primary);
+}
+
+.quiz-level-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.quiz-level-badge.iniciante {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.quiz-level-badge.medio {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
+.quiz-level-badge.avancado {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.quiz-selection-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.quiz-selection-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.btn-start {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    transition: transform 0.2s;
+}
+
+.btn-start:hover {
+    transform: scale(1.05);
+}
+
 .topic-card {
     background: var(--bg-card);
     backdrop-filter: blur(10px);
