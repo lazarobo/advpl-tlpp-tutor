@@ -19,7 +19,7 @@
     </div>
 
     <div class="tables-grid">
-        <div class="table-card glass-card" *ngFor="let table of filteredTables" (click)="openTableDetail(table)">
+        <div class="table-card glass-card" *ngFor="let table of paginatedTables" (click)="openTableDetail(table)">
             <div class="card-header">
                 <span class="table-name mono">{{ table.name }}</span>
                 <span class="table-type" [class.type-dic]="table.type === 'Dicionário'"
@@ -35,6 +35,17 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls" *ngIf="totalPages > 1">
+        <button class="page-btn" [disabled]="currentPage === 1" (click)="changePage(-1)">
+            Anterior
+        </button>
+        <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button class="page-btn" [disabled]="currentPage === totalPages" (click)="changePage(1)">
+            Próxima
+        </button>
     </div>
 
     <!-- Details Modal -->

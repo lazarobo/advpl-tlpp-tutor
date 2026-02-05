@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, tap, catchError } from 'rxjs/operators';
 
 export interface AdvPLFunction {
     name: string;
@@ -40,6 +43,10 @@ export interface AdvPLTable {
     providedIn: 'root'
 })
 export class AdvplDataService {
+
+    private sx2Data: AdvPLTable[] = [];
+
+    constructor(private http: HttpClient) { }
 
     // ... (tables array remains the same)
 
@@ -774,7 +781,40 @@ export class AdvplDataService {
         );
     }
 
-    getAllTables(): AdvPLTable[] {
-        return this.tables;
+    loadTables(): Observable<AdvPLTable[]> {
+        if (this.sx2Data.length > 0) {
+            return of([...this.tables, ...this.sx2Data]);
+        }
+
+        return this.http.get<any>('assets/SX2.json').pipe(
+            map(response => {
+                const items = response.items || [];
+                this.sx2Data = items.map((item: any) => ({
+                    name: item.x2_chave,
+                    description: item.x2_nome || 'Sem descrição',
+                    module: item.x2_modulo ? String(item.x2_modulo) : 'Protheus',
+                    type: 'Dados',
+                    key: item.x2_unico || ''
+                }));
+
+                // Filter out tables that are already in the hardcoded list to avoid duplicates
+                this.sx2Data = this.sx2Data.filter(newTable =>
+                    !this.tables.some(existing => existing.name === newTable.name)
+                );
+
+                return [...this.tables, ...this.sx2Data];
+            }),
+            tap({
+                error: (err) => console.error('Failed to load SX2 tables:', err)
+            }),
+            catchError(() => {
+                // If loading fails, just return the hardcoded tables
+                return of(this.tables);
+            })
+        );
+    }
+
+    getAllTables(): Observable<AdvPLTable[]> {
+        return this.loadTables();
     }
 }

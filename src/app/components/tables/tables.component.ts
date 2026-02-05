@@ -22,11 +22,17 @@ export class TablesComponent implements OnInit {
     selectedTableIndices: any[] = [];
     isModalOpen: boolean = false;
 
+    paginatedTables: AdvPLTable[] = [];
+    currentPage: number = 1;
+    itemsPerPage: number = 24;
+
     constructor(private advplService: AdvplDataService) { }
 
     ngOnInit() {
-        this.tables = this.advplService.getAllTables();
-        this.applyFilters();
+        this.advplService.getAllTables().subscribe(data => {
+            this.tables = data;
+            this.applyFilters();
+        });
     }
 
     openTableDetail(table: AdvPLTable) {
@@ -63,6 +69,35 @@ export class TablesComponent implements OnInit {
         }
 
         this.filteredTables = result;
+        this.currentPage = 1;
+        this.updatePaginatedTables();
+    }
+
+    updatePaginatedTables() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        this.paginatedTables = this.filteredTables.slice(startIndex, endIndex);
+
+        // Scroll to top of grid behavior (optional)
+        const grid = document.querySelector('.tables-grid');
+        if (grid) {
+            grid.scrollTop = 0;
+        }
+    }
+
+    changePage(delta: number) {
+        const newPage = this.currentPage + delta;
+        if (newPage >= 1 && newPage <= this.totalPages) {
+            this.currentPage = newPage;
+            this.updatePaginatedTables();
+
+            // Scroll to top of page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    get totalPages(): number {
+        return Math.ceil(this.filteredTables.length / this.itemsPerPage);
     }
 
     setFilter(type: string) {
