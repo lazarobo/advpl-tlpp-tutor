@@ -1,4 +1,41 @@
-<app-navbar *ngIf="showNavbar"></app-navbar>
-<main class="main-content">
+<!-- Layout com Sidebar (Dashboard) -->
+<div class="app-layout" *ngIf="showNavbar; else loginLayout">
+    <app-sidebar></app-sidebar>
+    <div class="content-wrapper">
+        <header class="app-header">
+            <div class="header-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Pesquisar função, tabela ou quiz..." class="search-input">
+                <span class="shortcut-hint">Ctrl K</span>
+            </div>
+
+            <div class="header-actions">
+                <div class="theme-toggle-group">
+                    <button class="theme-btn" [class.active]="themeService.getTheme() === 'light'"
+                        (click)="setTheme('light')" title="Modo Claro">☀️</button>
+                    <button class="theme-btn" [class.active]="themeService.getTheme() === 'default'"
+                        (click)="setTheme('default')" title="Padrão">💻</button>
+                    <button class="theme-btn" [class.active]="themeService.getTheme() === 'dark'"
+                        (click)="setTheme('dark')" title="Modo Escuro">🌙</button>
+                </div>
+
+                <div class="level-badge">
+                    <span class="badge-icon">⚡</span>
+                    <span>Nível 5</span>
+                </div>
+
+                <div class="user-avatar">
+                    DEV
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
+
+<!-- Layout sem Sidebar (Login) -->
+<ng-template #loginLayout>
     <router-outlet></router-outlet>
-</main>
+</ng-template>

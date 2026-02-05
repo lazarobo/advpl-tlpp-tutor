@@ -1,11 +1,211 @@
+.app-layout {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    background: radial-gradient(circle at top right, rgba(0, 212, 255, 0.05), transparent 40%),
+        radial-gradient(circle at bottom left, rgba(112, 0, 255, 0.05), transparent 40%);
+    scroll-behavior: smooth;
+}
+
+/* HEADER STYLES */
+.app-header {
+    height: 70px;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--glass);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+/* Search Bar */
+.header-search {
+    position: relative;
+    width: 400px;
+    max-width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    padding: 0.6rem 1rem 0.6rem 2.8rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    background: var(--bg-card);
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-glow-subtle);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.6;
+    font-size: 1rem;
+    pointer-events: none;
+    color: var(--text-muted);
+}
+
+.shortcut-hint {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-badge);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-default);
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Theme Toggle */
+.theme-toggle-group {
+    display: flex;
+    background: var(--bg-elevated);
+    border-radius: 20px;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid var(--border-default);
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}
+
+.theme-btn.active {
+    background: var(--bg-card);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    color: var(--primary);
+    transform: scale(1.05);
+}
+
+/* Level Badge */
+.level-badge {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), rgba(112, 0, 255, 0.1));
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    gap: 0.6rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.level-badge:hover {
+    background: rgba(0, 212, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.badge-icon {
+    color: #ffd700;
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+}
+
+/* Avatar */
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 212, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+    border-color: var(--primary);
+}
+
+/* Main Content */
 .main-content {
     padding: 2rem 3rem;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
-    min-height: calc(100vh - 90px);
+    min-height: calc(100% - 70px);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 768px) {
+    .app-header {
+        padding: 0 1rem;
+    }
+
+    .header-search {
+        display: none;
+        /* Em mobile, talvez esconder ou botão de lupa */
+    }
+
     .main-content {
         padding: 1rem;
     }

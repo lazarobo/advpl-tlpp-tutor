@@ -1,0 +1,51 @@
+<nav class="sidebar" [class.collapsed]="isCollapsed">
+    <!-- Header -->
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <img src="https://userfunction.com.br/wp-content/uploads/2021/09/LOGO-BRANCO-3.png" alt="AdvPL TLPP Tutor"
+                class="adaptive-logo">
+        </div>
+
+        <button class="toggle-btn" (click)="toggleCollapse()">
+            <span class="arrow-icon">{{ isCollapsed ? '›' : '‹' }}</span>
+        </button>
+    </div>
+
+    <!-- Menu -->
+    <ul class="nav-menu">
+        <li>
+            <a routerLink="/dashboard" routerLinkActive="active" title="Dashboard">
+                <span class="icon">📊</span>
+                <span class="text" *ngIf="!isCollapsed">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/functions" routerLinkActive="active" title="Funções">
+                <span class="icon">⚡</span>
+                <span class="text" *ngIf="!isCollapsed">Funções</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/tables" routerLinkActive="active" title="Tabelas">
+                <span class="icon">📚</span>
+                <span class="text" *ngIf="!isCollapsed">Tabelas</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/quiz" routerLinkActive="active" title="Quiz">
+                <span class="icon">🎮</span>
+                <span class="text" *ngIf="!isCollapsed">Desafios</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-spacer"></div>
+
+    <div class="sidebar-footer">
+        <!-- Controles movidos para o Header -->
+        <button class="btn-logout" (click)="logout()" title="Sair">
+            <span class="icon">🚪</span>
+            <span class="text" *ngIf="!isCollapsed">Sair</span>
+        </button>
+    </div>
+</nav>
