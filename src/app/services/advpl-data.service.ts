@@ -1028,6 +1028,9 @@ export class AdvplDataService {
         { name: 'CGC', category: 'Validacao', description: 'Valida CPF ou CNPJ', syntax: 'CGC(cDoc)', parameters: ['cDoc: CPF/CNPJ'], returnType: 'Logical', example: 'If CGC(cCNPJ)', tlppCompatible: true },
         { name: 'NaoVazio', category: 'Validacao', description: 'Valida se nao esta vazio', syntax: 'NaoVazio()', parameters: [], returnType: 'Logical', example: 'NaoVazio()', tlppCompatible: true },
         { name: 'Pertence', category: 'Validacao', description: 'Valida se pertence a lista', syntax: 'Pertence(cList)', parameters: ['cList: Opcoes'], returnType: 'Logical', example: 'Pertence(\"SIM/NAO\")', tlppCompatible: true },
+
+        // ===================== Classes / Framework =====================
+        { name: 'FWRest', category: 'Classes', description: 'Classe base para criação de serviços REST no Protheus. Responsável por expor endpoints (GET, POST, PUT, DELETE) e gerenciar rotas.', syntax: 'WSRESTFUL <Nome> DESCRIPTION <Desc>', parameters: [], returnType: 'Object', example: 'WSRESTFUL EXEMPRO DESCRIPTION "Exemplo REST" ... END WSRESTFUL', tlppCompatible: false },
     ];
 
     getCategories(): string[] {
