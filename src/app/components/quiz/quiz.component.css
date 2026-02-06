@@ -264,7 +264,7 @@
 
 .question-card {
     padding: 3rem;
-    background: rgba(30, 30, 40, 0.8);
+    background: var(--bg-card);
     border-radius: 20px;
 }
 
