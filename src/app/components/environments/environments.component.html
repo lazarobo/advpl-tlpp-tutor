@@ -26,6 +26,40 @@
             </div>
         </div>
 
+        <!-- Custom Environments -->
+        <div *ngFor="let env of environments" class="env-card glass-card custom-env" [routerLink]="['/tables']"
+            [queryParams]="{ env: env.name }">
+            <button class="btn-delete-env" (click)="deleteEnvironment(env, $event)" title="Excluir Ambiente">
+                <svg viewBox="0 0 24 24" fill="none" width="16" height="16" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            </button>
+            <div class="card-status">
+                <span class="status-dot"></span> Ativo
+            </div>
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" class="svg-icon">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h3>{{env.name}}</h3>
+            <p>{{env.description || 'Ambiente personalizado conectado via REST.'}}</p>
+
+            <div class="env-info"
+                style="margin-top: auto; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+                <div style="margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">🔗
+                    {{env.url}}</div>
+                <div>📚 {{env.tableCount}} tabelas carregadas</div>
+            </div>
+
+            <div class="card-footer">
+                <span class="link-text">Acessar Tabelas →</span>
+            </div>
+        </div>
+
         <!-- Add New (Placeholder) -->
         <div class="env-card glass-card add-new" (click)="addEnvironment()">
             <div class="card-icon plus-icon">
@@ -57,17 +91,10 @@
                     class="form-input">
             </div>
 
-            <div class="form-row">
-                <div class="form-group half">
-                    <label for="envIp">URL do Rest <span class="required">*</span></label>
-                    <input type="text" id="envIp" [(ngModel)]="newEnvironment.ip"
-                        placeholder="Ex: http://192.168.1.10:8090/rest" class="form-input">
-                </div>
-                <div class="form-group half">
-                    <label for="envPort">Porta <span class="required">*</span></label>
-                    <input type="number" id="envPort" [(ngModel)]="newEnvironment.port" placeholder="Ex: 1234"
-                        class="form-input">
-                </div>
+            <div class="form-group">
+                <label for="envIp">URL do Rest <span class="required">*</span></label>
+                <input type="text" id="envIp" [(ngModel)]="newEnvironment.ip"
+                    placeholder="Ex: http://192.168.1.10:8090/rest" class="form-input">
             </div>
 
             <div class="form-group">
@@ -94,5 +121,17 @@
             <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
             <button class="btn-save" (click)="saveEnvironment()">Salvar Ambiente</button>
         </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" *ngIf="isLoading">
+    <div class="loader-content">
+        <div class="logo-wrapper">
+            <img src="https://userfunction.com.br/wp-content/uploads/2021/09/LOGO-BRANCO-3.png" alt="UF"
+                class="loader-logo">
+        </div>
+        <div class="spinner-ring"></div>
+        <p>Carregando Tabelas...</p>
     </div>
 </div>

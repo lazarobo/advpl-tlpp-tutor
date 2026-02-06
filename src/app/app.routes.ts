@@ -4,10 +4,12 @@ import { FunctionsComponent } from './components/functions/functions.component';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { FunctionDetailComponent } from './components/function-detail/function-detail.component';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'functions', component: FunctionsComponent },
     { path: 'functions/:category', component: FunctionsComponent },

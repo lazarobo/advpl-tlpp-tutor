@@ -29,7 +29,8 @@ export class AppComponent {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd)
         ).subscribe((event: any) => {
-            this.showNavbar = !event.url.includes('/login');
+            // Hide navbar on login and register pages
+            this.showNavbar = !event.url.includes('/login') && !event.url.includes('/register');
         });
     }
 

@@ -34,9 +34,10 @@ export interface AdvPLTable {
     description: string;
     module: string;
     type: 'Dicionário' | 'Dados';
-    key?: string;
-    fields?: AdvPLField[];
-    indices?: AdvPLIndex[];
+    key?: string; // Campos únicos
+    fields?: AdvPLField[]; // Campos da tabela
+    indices?: AdvPLIndex[]; // Índices da tabela
+    environment?: string; // Nome do ambiente (para multi-ambientes)
 }
 
 @Injectable({
@@ -48,6 +49,55 @@ export class AdvplDataService {
     private sx3Fields: Map<string, AdvPLField[]> = new Map();
 
     constructor(private http: HttpClient) { }
+
+    // ... existing code ...
+
+    getAllTables(envName?: string): Observable<AdvPLTable[]> {
+        return this.loadTables().pipe(
+            map(tables => {
+                if (envName) {
+                    // Se um ambiente específico for solicitado
+                    return tables.filter(t => t.environment === envName);
+                } else {
+                    // Se nenhum ambiente for solicitado (Padrão), retorna apenas as que NÃO têm ambiente definido (ou seja, as padrão)
+                    return tables.filter(t => !t.environment);
+                }
+            })
+        );
+    }
+
+    addDynamicTables(rawItems: any[], envName: string) {
+        console.log(`Adding dynamic tables for env '${envName}':`, rawItems.length);
+        const newTables: AdvPLTable[] = rawItems.map(item => ({
+            name: item.X2_CHAVE || item.x2_chave,
+            description: item.X2_NOME || item.x2_nome || 'Sem descrição',
+            module: 'Dynamic',
+            type: 'Dados',
+            key: '',
+            environment: envName
+        }));
+
+        let count = 0;
+        newTables.forEach(t => {
+            // Check in sx2Data AND tables
+            // Permitir duplicatas se forem de ambientes diferentes
+            const existsInSx2 = this.sx2Data.some(ex => ex.name === t.name && ex.environment === t.environment);
+
+            // As hardcoded tables sempre existem no contexto global, mas aqui tratamos ambientes isolados.
+            // Se for ambiente customizado, adicionamos mesmo que exista no hardcoded (pois pode ser diferente)
+            if (!existsInSx2) {
+                this.sx2Data.push(t);
+                count++;
+            }
+        });
+        console.log(`Added ${count} dynamic tables for ${envName}. Total SX2: ${this.sx2Data.length}`);
+    }
+
+    removeTablesForEnvironment(envName: string) {
+        const initialCount = this.sx2Data.length;
+        this.sx2Data = this.sx2Data.filter(t => t.environment !== envName);
+        console.log(`Removed ${initialCount - this.sx2Data.length} tables for env '${envName}'`);
+    }
 
     // ... (tables array remains the same)
 
@@ -1126,9 +1176,7 @@ export class AdvplDataService {
         );
     }
 
-    getAllTables(): Observable<AdvPLTable[]> {
-        return this.loadTables();
-    }
+
 }
 
 

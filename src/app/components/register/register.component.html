@@ -1,0 +1,45 @@
+<div class="register-container">
+    <div class="register-card glass-card">
+        <div class="register-header">
+            <h1 class="logo">ADVPL Tutor</h1>
+            <p>Crie sua conta para começar</p>
+        </div>
+
+        <form (ngSubmit)="onRegister()">
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" [(ngModel)]="username" name="username" class="form-input"
+                    placeholder="Escolha um nome de usuário" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" [(ngModel)]="password" name="password" class="form-input"
+                    placeholder="Crie uma senha" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword"
+                    class="form-input" placeholder="Repita a senha" required>
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+
+            <div class="success-message" *ngIf="successMessage">
+                {{ successMessage }}
+            </div>
+
+            <button type="submit" class="btn-register" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Criar Conta</span>
+                <span *ngIf="isLoading">Criando...</span>
+            </button>
+        </form>
+
+        <div class="login-link">
+            Já tem uma conta? <a routerLink="/login">Faça login</a>
+        </div>
+    </div>
+</div>

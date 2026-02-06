@@ -9,7 +9,6 @@
                     [(ngModel)]="searchQuery" (keyup.enter)="onGlobalSearch()">
                 <span class="shortcut-hint">Ctrl K</span>
             </div>
-
             <div class="header-actions">
                 <div class="theme-toggle-group">
                     <button class="theme-btn" [class.active]="themeService.getTheme() === 'light'"

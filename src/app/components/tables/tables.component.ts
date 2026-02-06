@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdvplDataService, AdvPLTable } from '../../services/advpl-data.service';
 import { forkJoin } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-tables',
@@ -16,6 +17,7 @@ export class TablesComponent implements OnInit {
     filteredTables: AdvPLTable[] = [];
     filterType: string = 'Todos';
     searchQuery: string = '';
+    envName: string | null = null; // Current environment name
 
     // Modal State
     selectedTable: AdvPLTable | null = null;
@@ -27,12 +29,19 @@ export class TablesComponent implements OnInit {
     currentPage: number = 1;
     itemsPerPage: number = 24;
 
-    constructor(private advplService: AdvplDataService) { }
+    constructor(private advplService: AdvplDataService, private route: ActivatedRoute) { }
 
     ngOnInit() {
+        this.route.queryParams.subscribe(params => {
+            this.envName = params['env'] || null;
+            this.loadTables();
+        });
+    }
+
+    loadTables() {
         // Load both Tables (SX2) and Fields (SX3)
         forkJoin({
-            tables: this.advplService.getAllTables(),
+            tables: this.advplService.getAllTables(this.envName || undefined),
             fields: this.advplService.loadFields()
         }).subscribe(({ tables }) => {
             this.tables = tables;
