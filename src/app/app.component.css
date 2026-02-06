@@ -26,9 +26,9 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    position: sticky;
-    top: 1rem;
-    z-index: 10;
+    position: relative;
+    /* Changed from sticky */
+    /* top and z-index removed */
     background: var(--glass);
     transition: background 0.3s, border-color 0.3s;
 

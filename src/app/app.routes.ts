@@ -13,6 +13,8 @@ export const routes: Routes = [
     { path: 'functions/:category', component: FunctionsComponent },
     { path: 'function/:name', component: FunctionDetailComponent },
     { path: 'tables', loadComponent: () => import('./components/tables/tables.component').then(m => m.TablesComponent) },
+    { path: 'environments', loadComponent: () => import('./components/environments/environments.component').then(m => m.EnvironmentsComponent) },
+    { path: 'installation', loadComponent: () => import('./components/installation/installation.component').then(m => m.InstallationComponent) },
     { path: 'quiz', component: QuizComponent },
     { path: '**', redirectTo: 'login' }
 ];

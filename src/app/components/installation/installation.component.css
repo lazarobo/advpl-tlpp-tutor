@@ -1,0 +1,247 @@
+.installation-container {
+    padding: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.guide-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.section-card {
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s;
+}
+
+.section-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-default);
+}
+
+.section-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.section-header h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0;
+}
+
+.subsections {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.subsection {
+    padding-left: 1rem;
+    border-left: 3px solid var(--primary);
+    padding: 1.5rem 0 1.5rem 2rem;
+    background: linear-gradient(90deg, rgba(0, 212, 255, 0.03), transparent);
+    border-radius: 0 12px 12px 0;
+}
+
+.subsection h3 {
+    font-size: 1.3rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.subsection-content {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+.subsection-content code {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--primary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.subsection-content strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Code Block */
+.code-block {
+    margin-top: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.code-lang {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.copy-btn {
+    background: transparent;
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+.code-block code {
+    font-family: 'Courier New', monospace;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* References */
+.references {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(112, 0, 255, 0.05));
+}
+
+.reference-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.reference-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-default);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.reference-item:hover {
+    border-color: var(--primary);
+    transform: translateX(8px);
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.ref-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.ref-content {
+    flex: 1;
+}
+
+.ref-content h4 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin: 0 0 0.3rem 0;
+    font-weight: 600;
+}
+
+.ref-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.external-link {
+    font-size: 1.2rem;
+    color: var(--primary);
+    transition: transform 0.2s;
+}
+
+.reference-item:hover .external-link {
+    transform: translate(4px, -4px);
+}
+
+@media (max-width: 768px) {
+    .installation-container {
+        padding: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .section-card {
+        padding: 1.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .subsection {
+        padding-left: 1rem;
+    }
+
+    .subsection h3 {
+        font-size: 1.1rem;
+    }
+}

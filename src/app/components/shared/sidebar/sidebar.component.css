@@ -9,9 +9,10 @@
 .sidebar {
     width: 260px;
     height: 100vh;
-    background: var(--bg-card);
+    background: var(--bg-main);
     backdrop-filter: blur(20px);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
@@ -31,7 +32,6 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 2rem;
-    position: relative;
     overflow: visible;
 }
 
@@ -59,8 +59,8 @@
 
 .toggle-btn {
     position: absolute;
-    right: -25px;
-    top: 50%;
+    right: -12px;
+    top: 54px;
     transform: translateY(-50%);
     background: var(--primary);
     border: none;
@@ -133,6 +133,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.nav-svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--text-secondary);
+    /* Default muted */
+    transition: all 0.2s;
+}
+
+/* Blue color everywhere requested, or just active? 
+User said "deixe tudo na corzinha azul". So default should be blue-ish or turn blue.
+Let's make default blue. */
+.nav-svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--primary);
+}
+
+.nav-menu a:hover .nav-svg {
+    stroke: var(--text-primary);
+    filter: drop-shadow(0 0 4px var(--primary-glow));
+}
+
+.nav-menu a.active .nav-svg {
+    stroke: var(--primary);
+    filter: drop-shadow(0 0 5px var(--primary));
 }
 
 /* FOOTER */

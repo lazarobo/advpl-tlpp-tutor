@@ -5,7 +5,8 @@
         <header class="app-header">
             <div class="header-search">
                 <span class="search-icon">🔍</span>
-                <input type="text" placeholder="Pesquisar função, tabela ou quiz..." class="search-input">
+                <input #searchInput type="text" placeholder="Pesquisar função, classe..." class="search-input"
+                    [(ngModel)]="searchQuery" (keyup.enter)="onGlobalSearch()">
                 <span class="shortcut-hint">Ctrl K</span>
             </div>
 

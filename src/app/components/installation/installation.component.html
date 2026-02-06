@@ -1,0 +1,50 @@
+<div class="installation-container animate-fadeIn">
+    <header class="page-header">
+        <h1>Guia de Instalação do Protheus 12.1.2510</h1>
+        <p>Siga este guia completo para instalar e configurar o Protheus corretamente</p>
+    </header>
+
+    <div class="guide-content">
+        <div *ngFor="let section of sections" class="section-card glass-card">
+            <div class="section-header">
+                <span class="section-icon">{{section.icon}}</span>
+                <h2>{{section.title}}</h2>
+            </div>
+
+            <div class="subsections">
+                <div *ngFor="let subsection of section.subsections" class="subsection">
+                    <h3>{{subsection.title}}</h3>
+                    <div class="subsection-content" [innerHTML]="subsection.content"></div>
+
+                    <div *ngIf="subsection.code" class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">Config</span>
+                            <button class="copy-btn" (click)="copyCode(subsection.code)" title="Copiar">
+                                📋
+                            </button>
+                        </div>
+                        <pre><code>{{subsection.code}}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- References Section -->
+        <div class="section-card glass-card references">
+            <div class="section-header">
+                <span class="section-icon">📚</span>
+                <h2>Referências</h2>
+            </div>
+            <div class="reference-list">
+                <a *ngFor="let ref of references" [href]="ref.url" target="_blank" class="reference-item">
+                    <div class="ref-icon">▶️</div>
+                    <div class="ref-content">
+                        <h4>{{ref.title}}</h4>
+                        <p>{{ref.author}}</p>
+                    </div>
+                    <span class="external-link">↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

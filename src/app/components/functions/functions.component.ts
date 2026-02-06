@@ -29,6 +29,9 @@ export class FunctionsComponent implements OnInit {
             if (params['category']) {
                 this.selectedCategory = params['category'];
             }
+            if (params['search']) {
+                this.searchQuery = params['search'];
+            }
             this.filterFunctions();
         });
     }

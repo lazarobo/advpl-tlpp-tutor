@@ -1,0 +1,98 @@
+<div class="env-container animate-fadeIn">
+    <header class="page-header">
+        <h1>Meus Ambientes</h1>
+        <p>Gerencie seus ambientes Protheus e configurações de tabelas.</p>
+    </header>
+
+    <div class="env-grid">
+        <!-- Default Environment -->
+        <div class="env-card glass-card default" routerLink="/tables">
+            <div class="card-status">
+                <span class="status-dot"></span> Ativo
+            </div>
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" class="svg-icon">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                </svg>
+            </div>
+            <h3>Ambiente Padrão</h3>
+            <p>Tabelas nativas do sistema (SX2, SX3). Este ambiente contém a base de dados padrão carregada no sistema.
+            </p>
+            <div class="card-footer">
+                <span class="link-text">Acessar Tabelas →</span>
+            </div>
+        </div>
+
+        <!-- Add New (Placeholder) -->
+        <div class="env-card glass-card add-new" (click)="addEnvironment()">
+            <div class="card-icon plus-icon">
+                <svg viewBox="0 0 24 24" fill="none" class="svg-icon">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </div>
+            <h3>Adicionar Ambiente</h3>
+            <p>Conecte-se a um novo servidor Protheus para carregar tabelas personalizadas.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adicionar Ambiente -->
+<div class="modal-overlay" *ngIf="showAddModal" (click)="closeModal()">
+    <div class="modal-content glass-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Adicionar Novo Ambiente</h2>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <p class="modal-subtitle">Configure a conexão com seu servidor Protheus (AppServer).</p>
+
+            <div class="form-group">
+                <label for="envName">Nome do Ambiente <span class="required">*</span></label>
+                <input type="text" id="envName" [(ngModel)]="newEnvironment.name" placeholder="Ex: Protheus Produção"
+                    class="form-input">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="envIp">URL do Rest <span class="required">*</span></label>
+                    <input type="text" id="envIp" [(ngModel)]="newEnvironment.ip"
+                        placeholder="Ex: http://192.168.1.10:8090/rest" class="form-input">
+                </div>
+                <div class="form-group half">
+                    <label for="envPort">Porta <span class="required">*</span></label>
+                    <input type="number" id="envPort" [(ngModel)]="newEnvironment.port" placeholder="Ex: 1234"
+                        class="form-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="envDesc">Descrição</label>
+                <textarea id="envDesc" [(ngModel)]="newEnvironment.description"
+                    placeholder="Breve descrição deste ambiente..." class="form-input textarea"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="envToken">Token (Opcional)</label>
+                    <input type="text" id="envToken" [(ngModel)]="newEnvironment.token"
+                        placeholder="Token de autenticação" class="form-input">
+                </div>
+                <div class="form-group half">
+                    <label for="envTenant">Tenant ID (Opcional)</label>
+                    <input type="text" id="envTenant" [(ngModel)]="newEnvironment.tenantId" placeholder="ID do Tenant"
+                        class="form-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+            <button class="btn-save" (click)="saveEnvironment()">Salvar Ambiente</button>
+        </div>
+    </div>
+</div>
